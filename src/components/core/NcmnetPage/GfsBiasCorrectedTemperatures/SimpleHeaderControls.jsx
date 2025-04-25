@@ -1,0 +1,56 @@
+import React from 'react';
+import { FiArrowLeft } from 'react-icons/fi';
+
+const SimpleHeaderControls = ({
+  title,
+  selectedDate,
+  dateOptions,
+  onDateChange,
+  onBack,
+  isLoading,
+}) => {
+  return (
+    <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-200 pb-4 sm:flex-row sm:items-center">
+      <h2 className="text-xl font-semibold text-slate-800 md:text-2xl">
+        {title}
+      </h2>
+      <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
+        {/* Date Selector */}
+        <div className="flex items-center space-x-2">
+          <label
+            htmlFor="dateSelect"
+            className="flex-shrink-0 text-sm font-medium text-slate-700"
+          >
+            Date:
+          </label>
+          <select
+            id="dateSelect"
+            value={selectedDate}
+            onChange={onDateChange}
+            className="w-full rounded border-slate-300 p-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:w-auto"
+            aria-label="Select chart date"
+            disabled={isLoading}
+          >
+            {dateOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Back Button */}
+        <button
+          onClick={onBack}
+          className="flex items-center justify-center gap-1 rounded bg-slate-600 px-3 py-1.5 text-sm text-white shadow-sm transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 sm:w-auto"
+          disabled={isLoading}
+        >
+          <FiArrowLeft className="-ml-1 size-4" />
+          Back
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default SimpleHeaderControls;

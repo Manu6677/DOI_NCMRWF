@@ -1,0 +1,27 @@
+.transform-rotate-3d {
+  perspective: 1000px; /* Enable 3D perspective */
+}
+
+.card-inner {
+  position: relative;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+}
+
+.transform-rotate-3d:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  /* Front-facing content styles */
+}
+
+.card-back {
+  transform: rotateY(180deg); /* Flip the back side */
+}

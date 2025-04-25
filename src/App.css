@@ -1,0 +1,61 @@
+html,
+body {
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: scroll 10s linear infinite;
+}
+
+.scroll-container > * {
+  margin-bottom: 1rem; /* Adjust space between bulletins */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes scroll-titles {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-titles {
+  animation: scroll-titles 20s linear infinite;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
