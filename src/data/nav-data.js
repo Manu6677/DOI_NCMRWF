@@ -169,7 +169,7 @@ export const navData = [
         title: {
           // en: 'Numerical Weather Prediction (NWP) Models',
           en: 'Aboout Bimstec',
-          hi: 'संख्यात्मक मौसम भविष्यवाणी (NWP) मॉडल',
+          hi: 'बिम्सटेक के बारे में',
         },
         path: '/bimstec',
       },
@@ -177,7 +177,7 @@ export const navData = [
         id: 2,
         title: {
           en: 'Bimstec Charts',
-          hi: 'जलवायु पुनर्विश्लेषण',
+          hi: 'बिम्सटेक आरेख',
         },
         path: '/bimstec/charts',
       },

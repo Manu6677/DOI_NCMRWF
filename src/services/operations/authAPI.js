@@ -4,12 +4,15 @@ import { toast } from 'react-hot-toast';
 
 const { LOGIN_URL, REGISTER_URL } = authEndpoints;
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (username, password) => {
   const toastId = toast.loading('Logging in...');
   let result = null;
 
   try {
-    const response = await apiConnector('POST', LOGIN_URL, { email, password });
+    const response = await apiConnector('POST', LOGIN_URL, {
+      username,
+      password,
+    });
 
     if (!response?.data?.success) {
       throw new Error('Login failed. Please check your credentials.');

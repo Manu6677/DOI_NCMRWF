@@ -67,7 +67,7 @@ const ModelProducts = () => {
         selectedForecastHour,
         selectedUtcValue,
         page,
-        4
+        6
       );
 
       setShowMap(response?.showMap);
@@ -234,19 +234,20 @@ const ModelProducts = () => {
       {/* Product Display Grid */}
       {!loading && products.length > 0 && (
         <div
-          className={`grid gap-6 ${
-            products.length === 1
-              ? 'mx-auto grid-cols-1'
-              : 'grid-cols-1 lg:grid-cols-2'
+          className={`grid justify-center gap-6 ${
+            products.length === 1 ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
           }`}
         >
-          {/* {console.log('prods -- >', products)} */}
           {products.map((imageUrl, index) => (
             <ProductCard
               key={index}
               imageUrl={imageUrl}
               onClick={() => setPreviewProduct(imageUrl)}
-              Class={products.length === 1 ? 'h-auto w-full' : ''}
+              Class={`${
+                products.length === 1
+                  ? 'max-w-md w-full h-auto mx-auto' // Better single image styling
+                  : ''
+              }`}
             />
           ))}
         </div>
