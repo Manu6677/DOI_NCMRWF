@@ -2,7 +2,7 @@ import { apiConnector } from '../apiConnector';
 import { bimstecProductsEndpoints } from '../apis';
 import { toast } from 'react-hot-toast';
 
-const { GET_ALL_BIMSTEC_PRODUCTS, bimstecAPI, GET_BIMSTEC_FORECAST_HOURS } =
+const { GET_ALL_BIMSTEC_PRODUCTS, GET_BIMSTEC_FORECAST_HOURS } =
   bimstecProductsEndpoints;
 
 export const fetchBimstecProductsNames = async () => {

@@ -168,7 +168,7 @@ export const navData = [
         id: 1,
         title: {
           // en: 'Numerical Weather Prediction (NWP) Models',
-          en: 'Aboout Bimstec',
+          en: 'About Bimstec',
           hi: 'संख्यात्मक मौसम भविष्यवाणी (NWP) मॉडल',
         },
         path: '/bimstec',
