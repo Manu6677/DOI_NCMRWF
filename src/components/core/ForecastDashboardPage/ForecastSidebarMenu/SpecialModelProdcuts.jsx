@@ -17,6 +17,8 @@ import {
 } from '../../../../slices/allSpecialProductsSliceId';
 import { Navigate, useNavigate } from 'react-router-dom';
 
+const REACT_APP_ASSETS_BASE_URL_NEW = process.env.REACT_APP_ASSETS_BASE_URL_NEW;
+
 const SpecialModelProducts = () => {
   const forecastUrl = useSelector(
     (state) => state.allSpecialProductsId.forecastUrl
@@ -56,7 +58,6 @@ const SpecialModelProducts = () => {
 
   useEffect(() => {
     if (forecastUrl) {
-      console.log('forecastUrl', forecastUrl);
       if (Array.isArray(forecastUrl)) {
         setProducts(forecastUrl);
       } else {
@@ -65,17 +66,62 @@ const SpecialModelProducts = () => {
     }
   }, [forecastUrl]);
 
+  // useEffect(() => {
+  //   console.log('useEffect 2');
+  //   if (
+  //     selectedProductId === 31 &&
+  //     hasUserSelectedRef.current &&
+  //     !hasNavigatedRef.current
+  //   ) {
+  //     hasNavigatedRef.current = true;
+  //     console.log('Navigating to static cyclone page...');
+  //     navigate('/forecast-dashboard/special-products/statiscyclone');
+  //   }
+
+  //   if (
+  //     selectedProductId === 32 &&
+  //     hasUserSelectedRef.current &&
+  //     !hasNavigatedRef.current
+  //   ) {
+  //     hasNavigatedRef.current = true;
+  //     console.log('Redirecting to external strike page...');
+  //     window.location.href = 'https://nwp.ncmrwf.gov.in/STRIKE/strike.html';
+  //     return;
+  //   }
+
+  //   const loadForecastHour = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const { hours } = await fetchForecastHours(
+  //         null,
+  //         null,
+  //         selectedProductId
+  //       );
+
+  //       if (Array.isArray(hours) && hours.length > 0) {
+  //         dispatch(setSpecialForecastHours(hours));
+  //         dispatch(setSelectedSpecialForecastHour(hours[0]));
+  //       } else {
+  //         dispatch(setSpecialForecastHours([]));
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching forecast hours:', error);
+  //       toast.error('Unexpected error occurred while fetching forecast hours.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   loadForecastHour();
+  // }, [selectedProductId, navigate]);
+
   useEffect(() => {
-    console.log('useEffect 2');
     if (
-      selectedProductId === 31 &&
-      hasUserSelectedRef.current &&
-      !hasNavigatedRef.current
-    ) {
-      hasNavigatedRef.current = true;
-      console.log('Navigating to static cyclone page...');
-      navigate('/forecast-dashboard/special-products/statiscyclone');
-    }
+      selectedProductId === 30 ||
+      selectedProductId === 31 ||
+      selectedProductId === 32
+    )
+      return;
 
     const loadForecastHour = async () => {
       setLoading(true);
@@ -101,6 +147,28 @@ const SpecialModelProducts = () => {
     };
 
     loadForecastHour();
+  }, [selectedProductId]);
+
+  useEffect(() => {
+    if (!hasUserSelectedRef.current || hasNavigatedRef.current) return;
+
+    if (selectedProductId === 30) {
+      hasNavigatedRef.current = true;
+      window.location.href = `${REACT_APP_ASSETS_BASE_URL_NEW}/NIOTC/niotc.html`;
+      return;
+    }
+
+    if (selectedProductId === 31) {
+      hasNavigatedRef.current = true;
+      navigate('/forecast-dashboard/special-products/statiscyclone');
+      return;
+    }
+
+    if (selectedProductId === 32) {
+      hasNavigatedRef.current = true;
+      window.location.href = `${REACT_APP_ASSETS_BASE_URL_NEW}/STRIKE/strike.html`;
+      return;
+    }
   }, [selectedProductId, navigate]);
 
   return (

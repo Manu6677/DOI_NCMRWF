@@ -3,15 +3,6 @@ import Spinner from '../../../common/Spinner';
 
 const ForecastHours = ({ selectedHour, onSelect, forecastHours }) => {
   const [loading, setLoading] = useState(false);
-
-  console.log(
-    'selectedHour :',
-    selectedHour,
-    'onSelect :',
-    onSelect,
-    'forecastHours :',
-    forecastHours
-  );
   return (
     <div className="p-2">
       <h2 className="mb-2 text-lg font-semibold text-slate-700">
