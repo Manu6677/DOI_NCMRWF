@@ -107,25 +107,6 @@ const BimstecSidebarMenu = () => {
   const products = useSelector((state) => state.allBimstec.products);
 
   const fetchForecastData = async (product, hour, date) => {
-    // try {
-    //   const res = await fetch(
-    //     `http://localhost:8000/api/v1/bimstec/forecast-hours?product_header=${product.product_header}&product_sub_header=${product.product_sub_header}&product_name=${encodeURIComponent(product.product_name)}&forecastHour=${hour}&date=${date}`
-    //   );
-    //   const data = await res.json();
-    //   console.log(data);
-
-    //   if (Array.isArray(data.forecastHours)) {
-    //     dispatch(setBimstecForecastHours(data.forecastHours));
-    //   } else {
-    //     console.error('forecastHours is not an array');
-    //   }
-
-    //   if (Array.isArray(data.forecastUrls)) {
-    //     dispatch(setBimstecForecastUrls(data.forecastUrls));
-    //   } else {
-    //     console.error('forecastUrls is not an array');
-    //   }
-    // }
     try {
       const { forecastHours, forecastUrls } =
         await fetchBimstecForecastHoursAndUrls({

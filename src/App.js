@@ -13,6 +13,11 @@ import DataMonitoring from './components/core/NcmnetPage/DataMonitoring';
 import DataDetailsPage from './components/core/NcmnetPage/DataMonitoring/DataDetailsPage';
 import DataTypesExplanationPage from './components/core/NcmnetPage/DataMonitoring/DataTypesExplanationPage';
 import RtmPortal from './components/core/NcmnetPage/RtmPortal';
+import ObservationMenu from './components/core/ObservationReport/ObservationMenu';
+import MonthlyObservation from './components/core/ObservationReport/MonthlyObservation';
+import DailyObservation from './components/core/ObservationReport/DailyObservation';
+import RegionSelection from './components/core/ERPReports/RegionSelection';
+import WeeklyPdfFetcher from './components/core/ERPReports/WeeklyPdfFetcher';
 
 // --- Lazy-Loaded Page/Feature Components ---
 // Structure/Core Pages
@@ -163,6 +168,17 @@ function App() {
             path="/about-us/organizationalstructure"
             element={<OrganizationalStructure />}
           />
+          <Route path="/observation-monitoring" element={<ObservationMenu />} />
+          <Route
+            path="/observation-monitoring/monthly"
+            element={<MonthlyObservation />}
+          />
+          <Route
+            path="/observation-monitoring/daily"
+            element={<DailyObservation />}
+          />
+          <Route path="/region-selection" element={<RegionSelection />} />
+          <Route path="/region/:region/:type" element={<WeeklyPdfFetcher />} />
           <Route path="/about/former-directors" element={<FormerDirectors />} />
           <Route path="/about/careers" element={<Careers />} />
           <Route path="/all-jobs" element={<AllJobs />} />
