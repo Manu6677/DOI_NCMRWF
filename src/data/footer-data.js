@@ -117,14 +117,14 @@ export const links = {
         en: 'Recruitment Results',
         hi: 'भर्ती परिणाम',
       },
-      path: 'https://www.ncmrwf.gov.in/Recruitments%20Results/Recruitment%20_Project%20Scientist001.pdf',
+      path: 'https://nwp.ncmrwf.gov.in/Documents/Notices/Recruitment%20_Project%20Scientist001.pdf',
     },
     {
       title: {
         en: 'Call For Proposals',
         hi: 'प्रस्ताव के लिए कॉल',
       },
-      path: 'https://www.ncmrwf.gov.in/Call-for-proposals-for-MM-III.pdf',
+      path: 'https://nwp.ncmrwf.gov.in/Documents/slider-notice/Call-for-proposals-for-MM-III.pdf',
     },
   ],
   portalsAndForms: [
@@ -177,14 +177,14 @@ export const links = {
         en: 'Citizen Charter',
         hi: 'नागरिक चार्टर',
       },
-      path: 'https://www.ncmrwf.gov.in/citizen%27s_charter_2014-15.pdf',
+      path: 'https://nwp.ncmrwf.gov.in/Documents/Notices/citizen%27s_charter_2014-15.pdf',
     },
     {
       title: {
         en: 'Grievance Cell',
         hi: 'शिकायत सेल',
       },
-      path: 'https://www.ncmrwf.gov.in/newweb/header-nav-pdf/Public_grievances_page.pdf',
+      path: 'https://nwp.ncmrwf.gov.in/Documents/Notices/Public_grievances_page.pdf',
     },
   ],
   communication: [
