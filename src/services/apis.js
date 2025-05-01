@@ -30,6 +30,8 @@ export const forecastProductsEndpoints = {
     BASE_URL + '/forecast-products/getAllEnsembleForecastProducts',
   GET_EXTENDED_FORECAST_MODEL_CHARTS:
     BASE_URL + '/forecast-products/getAllExtendedForecastProducts',
+  GET_URBAN_FORECAST_MODEL_CHARTS:
+    BASE_URL + '/forecast-products/getUrbanModelForecastProducts',
   GET_ALL_FORECAST_MODELS: BASE_URL + '/forecast/all-models',
   GET_ALL_MODEL_FORECAST_PRODUCTS: BASE_URL + '/forecast/forecast-products',
   GET_SPECIAL_ALL_PRODUCTS:

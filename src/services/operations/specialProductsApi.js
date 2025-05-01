@@ -125,7 +125,7 @@ export const fetchForecastUrl = async (
     // console.log('result', result);
   } catch (error) {
     console.error('Error fetching forecast URL:', error);
-    toast.error('Failed to fetch forecast data');
+    // toast.error('Failed to fetch forecast data');
   } finally {
     toast.dismiss(toastId);
   }

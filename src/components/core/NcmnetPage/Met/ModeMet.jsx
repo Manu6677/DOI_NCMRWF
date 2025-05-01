@@ -36,7 +36,7 @@ const baseChartDefinition = [
 const days = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5'];
 const IMAGE_API_BASE_URL =
   process.env.REACT_APP_ASSETS_BASE_URL_NEW_DIR ||
-  'https://www.ncmrwf.gov.in/Data/mihir';
+  'https://nwp.ncmrwf.gov.in/Data/mihir';
 // --- End Base Data Definition ---
 
 // --- Helper Functions ---

@@ -8,6 +8,7 @@ const {
   GET_SHORT_FORECAST_MODEL_CHARTS,
   GET_ENSEMBLE_FORECAST_MODEL_CHARTS,
   GET_EXTENDED_FORECAST_MODEL_CHARTS,
+  GET_URBAN_FORECAST_MODEL_CHARTS,
   GET_ALL_FORECAST_MODELS,
   GET_ALL_MODEL_FORECAST_PRODUCTS,
   GET_SPECIAL_ALL_PRODUCTS,
@@ -93,6 +94,8 @@ export const fetchProductChart = async (
       url = `${GET_ENSEMBLE_FORECAST_MODEL_CHARTS}/${modelId}/${forecast_product_id}`;
     } else if (modelId === 4) {
       url = `${GET_EXTENDED_FORECAST_MODEL_CHARTS}/${modelId}/${forecast_product_id}`;
+    } else if (modelId === 5) {
+      url = `${GET_URBAN_FORECAST_MODEL_CHARTS}/${modelId}/${forecast_product_id}`;
     }
 
     if (selectedProductId > 0) {
