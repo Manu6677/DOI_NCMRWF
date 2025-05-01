@@ -9,7 +9,7 @@ const Footer = () => {
   const { language } = useSelector((state) => state.language);
   const locale = language?.locale;
 
-  const [visitorCount, setVisitorCount] = useState(2997884);
+  const [visitorCount, setVisitorCount] = useState(3031501);
   const currentDate = new Date();
 
   useEffect(() => {

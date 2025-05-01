@@ -108,7 +108,7 @@ const ObservationProductList = () => {
 
   return (
     <SubMenu
-      label="Observational Products"
+      label="Observations"
       icon={<FaLayerGroup />}
       style={{ backgroundColor: '#003244', color: '#ffffff' }}
     >
