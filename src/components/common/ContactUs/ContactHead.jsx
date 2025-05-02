@@ -7,11 +7,13 @@ const ContactHead = () => {
     <ReusableTable
       title="OFFICE OF HEAD"
       subheading="NCMRWF"
-      contact="FAX No: 0120-2419484,2419494"
+      contact="FAX N: 0120-2419484,2419494"
       columns={columnsContactUs}
       data={ncmrwfHead}
     />
+    
+
+    
   );
 };
-
 export default ContactHead;
