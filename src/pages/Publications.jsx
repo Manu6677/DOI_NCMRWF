@@ -516,6 +516,9 @@ const Publications = () => {
                 <option value="research">Research</option>
                 <option value="observation">Observational Monitoring</option>
                 <option value="erp-reports">ERP Reports</option>
+                <option value="project">Project</option>
+                <option value="mme">MME</option>
+                <option value="mme">Conference</option>
               </select>
             </div>
             <ul className="space-y-3 text-sm sm:text-base">

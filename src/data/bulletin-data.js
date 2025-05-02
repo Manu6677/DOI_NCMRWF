@@ -3,27 +3,29 @@ const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL_NEW_DIR;
 export const bulletinBoardDetails = [
   {
     text: 'WCSSP India Science Plan',
-    link: `${ASSETS_BASE_URL}/WCSSP%20India%20Project%20Science%20Plan%20FY23-25_new.pdf`,
+    link: `${ASSETS_BASE_URL}/Documents/slider-notice/WCSSP%20India%20Project%20Science%20Plan%20FY23-25_new.pdf`,
     status: 'new',
   },
-  {
-    text: 'Call for Research Proposals under Weather and Climate Science for Service Partnership India (WCSSP-India)',
-    link: `${ASSETS_BASE_URL}/WCSSP-India_Call_for_Proposal.pdf`,
-    status: '',
-  },
+  slider -
+    notice /
+      {
+        text: 'Call for Research Proposals under Weather and Climate Science for Service Partnership India (WCSSP-India)',
+        link: `${ASSETS_BASE_URL}/Documents/slider-notice/WCSSP-India_Call_for_Proposal.pdf`,
+        status: '',
+      },
   {
     text: 'NCMRWF Annual Report 2024-2025',
-    link: `${ASSETS_BASE_URL}/annual-reports-pdf/NCMRWF_Annual_Report_2024_25_FINAL.pdf`,
+    link: `${ASSETS_BASE_URL}/Documents/slider-notice/annual-reports-pdf/NCMRWF_Annual_Report_2024_25_FINAL.pdf`,
     status: '',
   },
   {
     text: 'Commemorating 37th Foundation Day of National Centre for Medium Range Weather Forecasting',
-    link: `${ASSETS_BASE_URL}/Foundation_Day_Programme_25Mar2025_modified.pdf`,
+    link: `${ASSETS_BASE_URL}/Documents/slider-notice/Foundation_Day_Programme_25Mar2025_modified.pdf`,
     status: '',
   },
   {
     text: 'Hindi Vaigyanik Sangoshti-2025',
-    link: `${ASSETS_BASE_URL}/Program-Hindi_Sangosthi_24-25Mar2025-1.pdf`,
+    link: `${ASSETS_BASE_URL}/Documents/slider-notice/Program-Hindi_Sangosthi_24-25Mar2025-1.pdf`,
     status: '',
   },
   // {
@@ -69,7 +71,7 @@ export const bulletinBoardDetails = [
   // },
   {
     text: 'Internship/Dissertation application',
-    link: `${ASSETS_BASE_URL}/internship-app.php`,
+    link: `${ASSETS_BASE_URL}/Documents/slider-notice/internship-app`,
     status: '',
   },
   // {

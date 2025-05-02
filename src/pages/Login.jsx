@@ -7,7 +7,7 @@ import ncmrwfLogo from '../assets/images/NCMRWF_Logo_Hindi-English.png';
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const result = await loginUser(formData.email, formData.password);
+      const result = await loginUser(formData.username, formData.password);
       if (result && result.token) {
         localStorage.setItem('token', result.token);
         localStorage.setItem('user', JSON.stringify(result.user));
@@ -55,19 +55,19 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-slate-700 dark:text-slate-300"
             >
-              Email Address
+              Username
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               className="mt-2 block w-full rounded-lg border border-slate-300 p-3 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-              placeholder="you@example.com"
+              placeholder="user name"
               required
             />
           </div>
@@ -97,16 +97,6 @@ const Login = () => {
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
-
-          {/* <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-            Don’t have an account?{' '}
-            <a
-              href="/signup"
-              className="font-medium text-blue-600 hover:underline dark:text-blue-400"
-            >
-              Sign up
-            </a>
-          </p> */}
         </form>
       </div>
     </section>
