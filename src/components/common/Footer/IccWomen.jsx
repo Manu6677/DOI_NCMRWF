@@ -52,28 +52,28 @@ const IccWomen = () => {
         en: 'Sexual Harassment of Women at Workplace (Prevention, Prohibition, and Redressal) Act and Rule 2013',
         hi: 'कार्यस्थल पर महिलाओं के यौन उत्पीड़न (रोकथाम, निषेध और निवारण) अधिनियम और नियम 2013',
       },
-      link: '/icc-for-women-pdf/1-shc_acts2013.pdf',
+      link: '/Documents/icc-for-women/1-shc_acts2013.pdf',
     },
     {
       title: {
         en: 'Handbook on Sexual Harassment of Women at Workplace',
         hi: 'कार्यस्थल पर महिलाओं के यौन उत्पीड़न पर पुस्तिका',
       },
-      link: '/icc-for-women-pdf/2-Handbook-on-Sexual-Harassment-of-Women-at-Workplace.pdf',
+      link: '/Documents/icc-for-women/2-Handbook-on-Sexual-Harassment-of-Women-at-Workplace.pdf',
     },
     {
       title: {
         en: 'Composition Order of Internal Complaints Committee (ICC), NCMRWF',
         hi: 'आंतरिक शिकायत समिति (आईसीसी), एनसीएमआरडब्ल्यूएफ का गठन आदेश',
       },
-      link: '/icc-for-women-pdf/3-OM_ICC_26Feb21_NCMRWF.pdf',
+      link: '/Documents/icc-for-women/3-OM_ICC_26Feb21_NCMRWF.pdf',
     },
     {
       title: {
         en: "DOP & T.O.M. Dated 1 November 2017 Regarding Online Complaint Management System Titled 'Sexual Harassment Electronic box' (SHe - Box )",
         hi: "डीओपी और टी.ओ.एम. दिनांक 1 नवंबर 2017 'यौन उत्पीड़न इलेक्ट्रॉनिक बॉक्स' (एसएचई-बॉक्स) शीर्षक से ऑनलाइन शिकायत प्रबंधन प्रणाली के संबंध में",
       },
-      link: '/icc-for-women-pdf/4-1013-7-2016-esttAIII.pdf',
+      link: '/Documents/icc-for-women/4-1013-7-2016-esttAIII.pdf',
     },
   ];
 
