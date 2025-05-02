@@ -24,8 +24,6 @@ export const fetchCyclonesUrl = async (cycle) => {
       { date: datePart, utc: utc } // params
     );
 
-    console.log('cyclone response', response);
-
     if (!response?.data?.imageUrl) {
       throw new Error('Cyclone image URL not found in response.');
     }

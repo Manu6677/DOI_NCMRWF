@@ -79,7 +79,7 @@ const WeeklyPdfFetcher = () => {
     }
 
     const url = `${REACT_APP_ASSETS_BASE_URL_NEW}/${REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH}/${selected}/ERF_PROD/${formattedRegion}/${formattedType}/${pdfName}`;
-    console.log('pdfUrl', url);
+    // console.log('pdfUrl', url);
     setPdfUrl(url);
   };
 
