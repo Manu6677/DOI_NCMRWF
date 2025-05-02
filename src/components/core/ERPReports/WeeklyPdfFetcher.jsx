@@ -21,7 +21,6 @@ const getThursdays = (year, month) => {
 
 const WeeklyPdfFetcher = () => {
   const { region, type } = useParams();
-  //   const [saturdays, setSaturdays] = useState([]);
   const [thursdays, setThursdays] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [pdfUrl, setPdfUrl] = useState('');
@@ -61,8 +60,6 @@ const WeeklyPdfFetcher = () => {
       region === 'india-region' ? 'India-Region' : 'BIMSTEC-Region';
     const formattedType =
       type === 'weeklymean' ? 'Weekly-Mean' : 'Four-week-Mean';
-
-    // const baseUrl = 'https://nwp.ncmrwf.gov.in/Data/mihir'; // ✅ CORRECT domain for iframes
 
     let pdfName = '';
 
