@@ -109,21 +109,17 @@ const Navbar = () => {
       <div className="flex items-center justify-center gap-6 text-2xl">
         {/* Notification Bell */}
         <div
-          className="relative cursor-pointer text-white transition-transform duration-200 hover:scale-110"
+          className="relative cursor-pointer text-white transition-transform duration-300 hover:scale-110"
           onClick={() => dispatch(openBulletin())}
           title="New Notifications Available"
         >
-          {/* Subtle pulsing effect for new notifications */}
-          {/* <span className="absolute right-0 top-0 size-3 animate-ping rounded-full bg-red-600 opacity-75"></span>
-          <span className="absolute right-0 top-0 size-3 rounded-full bg-red-600"></span> */}
-
-          {/* New Badge with Animation */}
+          {/* Your original 'New' badge — unchanged */}
           <span className="absolute -right-4 -top-2 animate-bounce rounded-md bg-red-600 px-1 text-xs font-bold text-white">
             New
           </span>
 
-          {/* Bell Icon */}
-          <GoBellFill className="text-3xl font-semibold text-white" />
+          {/* Bell Icon with glow + gentle pulse */}
+          <GoBellFill className="text-yellow-400 animate-bell-pulse text-4xl drop-shadow-[0_0_6px_rgba(255,255,0,0.7)]" />
         </div>
         <div>
           {isLoggedIn ? (

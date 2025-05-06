@@ -151,7 +151,7 @@ const ProductsList = () => {
                             value={product.id}
                             checked={selectedProductId === product.id}
                             onChange={() => handleSelectProduct(product)}
-                            className="size-4 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+                            // className="size-4 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
                           />
                           <span className="inline-block max-w-[150px] whitespace-normal break-words text-base capitalize">
                             {product.product_name}
@@ -173,7 +173,8 @@ const ProductsList = () => {
                           value={product.id}
                           checked={selectedProductId === product.id}
                           onChange={() => handleSelectProduct(product)}
-                          className="size-4 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+                          // className="checked:border-white-400 size-4 cursor-pointer appearance-none rounded-full border text-blue-500 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+                          // className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border text-white checked:border-white checked:bg-white"
                         />
                         <span className="inline-block max-w-[150px] whitespace-normal break-words text-base capitalize">
                           {product.product_name}

@@ -126,7 +126,19 @@ module.exports = {
         900: '#14532d',
       },
     },
-    extend: {},
+    extend: {
+      animation: {
+        'bell-pulse': 'bell-pulse 2s ease-in-out infinite',
+      },
+      keyframes: {
+        'bell-pulse': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(10deg)' },
+          '50%': { transform: 'rotate(-10deg)' },
+          '75%': { transform: 'rotate(5deg)' },
+        },
+      },
+    },
   },
   plugins: [],
 };

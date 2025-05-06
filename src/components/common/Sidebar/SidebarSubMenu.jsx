@@ -24,7 +24,8 @@ const RenderItem = ({
           value={item.id}
           checked={selectedItem?.id === item.id}
           onChange={() => onSelectItem(item)}
-          className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+          // className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+          className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-white checked:border-white checked:bg-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-[#003244]"
         />
         <span className="inline-block max-w-[150px] whitespace-normal break-words text-base capitalize">
           {item.product_name.replace(/-/g, ' ')}
