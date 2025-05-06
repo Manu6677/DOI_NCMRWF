@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import reportImg2223 from '../assets/images/reportsImg/reports2223.png';
 import reportImg2324 from '../assets/images/reportsImg/reports2324.png';
 import reportImg2425 from '../assets/images/reportsImg/reports2425.png';
@@ -8,11 +8,13 @@ import newsletterImg2021 from '../assets/images/reportsImg/newsletter2021.png';
 import newsletterImg2020 from '../assets/images/reportsImg/newsletter2020.png';
 import thirtyYearsImg from '../assets/images/reportsImg/30years.png';
 import vision2047Img from '../assets/images/reportsImg/vision2047.png';
+import { EyeIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 
 import {
   fetchPublications,
   fetchInternalReports,
 } from '../services/operations/publicationsAPI';
+import { button } from '@material-tailwind/react';
 
 const annualReports = [
   {
@@ -77,6 +79,7 @@ const Publications = () => {
   const [selectedYear, setSelectedYear] = useState('2024');
   const [internalReports, setInternalReports] = useState(null);
   const [selectedReportType, setSelectedReportType] = useState('verification');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPublications = async () => {
@@ -120,264 +123,6 @@ const Publications = () => {
 
     getReports();
   }, [activeTab, selectedReportType]);
-
-  // return (
-  //   <div className="mx-auto max-w-6xl rounded-lg bg-white p-8 shadow-lg">
-  //     <div className="mb-6 flex justify-center space-x-4">
-  //       {[
-  //         'Publications',
-  //         'Internal Reports',
-  //         'Annual Reports',
-  //         '30 Years of Excellence',
-  //         'Vision 2047',
-  //         // 'Newsletters',
-  //       ].map((tab) => (
-  //         <button
-  //           key={tab}
-  //           className={`rounded-full px-6 py-2 text-lg font-semibold shadow-md transition-all duration-300 ${
-  //             activeTab === tab
-  //               ? 'scale-105 bg-blue-600 text-white'
-  //               : 'bg-slate-200 hover:bg-slate-300'
-  //           }`}
-  //           onClick={() => setActiveTab(tab)}
-  //         >
-  //           {tab}
-  //         </button>
-  //       ))}
-  //     </div>
-
-  //     <div className="rounded-lg border border-slate-300 bg-slate-50 p-6">
-  //       {activeTab === 'Publications' && (
-  //         <div>
-  //           <h2 className="mb-4 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-slate-800">
-  //             Publications
-  //           </h2>
-  //           <div className="mb-4">
-  //             <label className="mr-2 text-lg font-semibold text-slate-800">
-  //               Select Year:
-  //             </label>
-  //             <select
-  //               className="rounded border border-slate-300 px-3 py-2 text-lg"
-  //               value={selectedYear}
-  //               onChange={(e) => setSelectedYear(e.target.value)}
-  //             >
-  //               <option value="2024">2024</option>
-  //               <option value="2023">2023</option>
-  //             </select>
-  //           </div>
-  //           {loading && <p>Loading...</p>}
-  //           {error && <p className="text-red-600">{error}</p>}
-  //           {!loading && !error && publications.length === 0 && (
-  //             <p>No publications found.</p>
-  //           )}
-  //           {!loading && !error && (
-  //             <ul className="space-y-4">
-  //               {publications.map((pub, index) => (
-  //                 <li key={index} className="text-slate-700">
-  //                   {/* {console.log('pub.authors -> ', pub.authors)} */}
-  //                   <strong className="text-slate-900">
-  //                     {pub.authors.map((author, id) => (
-  //                       <span key={id}>
-  //                         {author}
-  //                         {id !== pub.authors.length - 1 ? ', ' : ''}
-  //                       </span>
-  //                     ))}
-  //                   </strong>{' '}
-  //                   {pub.title}. <em>{pub.journal}</em>
-  //                   {pub.doi && (
-  //                     <>
-  //                       {' '}
-  //                       (DOI:{' '}
-  //                       <a
-  //                         href={`https://doi.org/${pub.doi}`}
-  //                         className="text-blue-600 hover:underline"
-  //                         target="_blank"
-  //                         rel="noopener noreferrer"
-  //                       >
-  //                         {pub.doi}
-  //                       </a>
-  //                       )
-  //                     </>
-  //                   )}
-  //                   .
-  //                 </li>
-  //               ))}
-  //             </ul>
-  //           )}
-  //         </div>
-  //       )}
-
-  //       {activeTab === 'Annual Reports' && (
-  //         <div>
-  //           <h2 className="mb-4 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-slate-800">
-  //             Annual Reports
-  //           </h2>
-  //           <div className="flex flex-wrap justify-between">
-  //             {annualReports.map((report, index) => (
-  //               <a
-  //                 key={index}
-  //                 href={`${ASSETS_BASE_URL_NEW}${report.link}`}
-  //                 className="flex flex-col items-center rounded-lg p-4 transition"
-  //                 target="_blank"
-  //                 rel="noopener noreferrer"
-  //               >
-  //                 <img
-  //                   src={report?.image}
-  //                   alt="Annual Report"
-  //                   className="w-40 rounded-lg shadow-md"
-  //                 />
-  //                 <span className="mt-3 text-lg font-semibold text-blue-600">
-  //                   {report.year}
-  //                 </span>
-  //               </a>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       )}
-
-  //       {/* {activeTab === 'Newsletters' && (
-  //         <div>
-  //           <h2 className="mb-4 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-slate-800">
-  //             Newsletters
-  //           </h2>
-  //           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-  //             {newsletters.map((newsletter, index) => (
-  //               <a
-  //                 key={index}
-  //                 href={`${ASSETS_BASE_URL}${newsletter.link}`}
-  //                 className="flex flex-col items-center rounded-lg bg-white p-4 shadow-md transition hover:shadow-lg"
-  //                 target="_blank"
-  //                 rel="noopener noreferrer"
-  //               >
-  //                 <img
-  //                   src={newsletter?.image}
-  //                   alt="Newsletter"
-  //                   className="h-32 w-auto rounded-lg shadow-md"
-  //                 />
-  //                 <span className="mt-3 text-lg font-semibold text-blue-600">
-  //                   {newsletter.year}
-  //                 </span>
-  //               </a>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       )} */}
-
-  //       {activeTab === 'Internal Reports' && (
-  //         <div>
-  //           <h2 className="mb-4 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-slate-800">
-  //             Internal Reports
-  //           </h2>
-  //           <div className="mb-4">
-  //             <label className="mr-2 text-lg font-semibold text-slate-800">
-  //               Select Report Type:
-  //             </label>
-  //             <select
-  //               className="rounded border border-slate-300 px-3 py-2 text-lg"
-  //               value={selectedReportType}
-  //               onChange={(e) => setSelectedReportType(e.target.value)}
-  //             >
-  //               <option value="">All Reports</option>
-  //               <option value="technical">Technical</option>
-  //               <option value="verification">Verification</option>
-  //               <option value="research">Research</option>
-  //               <option value="observation">Observational Monitoring</option>
-  //               <option value="erp-reports">ERP Reports</option>
-  //             </select>
-  //           </div>
-  //           <ul className="space-y-3">
-  //             {internalReports && internalReports.length > 0 ? (
-  //               internalReports.map((report, index) => (
-  //                 <li key={index} className="flex items-center space-x-2">
-  //                   <a
-  //                     href={`${ASSETS_BASE_URL_NEW}${report.link}`}
-  //                     className="text-blue-600 hover:underline"
-  //                     target="_blank"
-  //                     rel="noopener noreferrer"
-  //                   >
-  //                     {report.title}
-  //                   </a>
-  //                   {report.status === 'new' && (
-  //                     <span className="ml-2 rounded-full bg-green-500 px-2 py-1 text-xs font-semibold text-white">
-  //                       New
-  //                     </span>
-  //                   )}
-  //                 </li>
-  //               ))
-  //             ) : (
-  //               <p>No internal reports available.</p>
-  //             )}
-  //           </ul>
-  //         </div>
-  //       )}
-
-  //       {activeTab === '30 Years of Excellence' && (
-  //         <div>
-  //           <h2 className="mb-4 border-b-2 border-green-500 pb-2 text-2xl font-bold text-slate-800">
-  //             30 Years of Excellence in Operational Numerical Weather Prediction
-  //           </h2>
-  //           <div className="grid">
-  //             {thirtyYearPdfs.length === 0 ? (
-  //               <p>No PDFs available.</p>
-  //             ) : (
-  //               thirtyYearPdfs.map((pdf, index) => (
-  //                 <Link
-  //                   key={index}
-  //                   to={`${ASSETS_BASE_URL_NEW}${pdf.link}`}
-  //                   className="flex flex-col items-center rounded-lg p-4 transition"
-  //                   target="_blank"
-  //                   rel="noopener noreferrer"
-  //                 >
-  //                   <img
-  //                     src={pdf.image || 'default-annual-report-image.jpg'}
-  //                     alt="30 Years of Excellence"
-  //                     className="w-80 rounded-lg shadow-md"
-  //                   />
-  //                   <span className="mt-3 w-4/12 text-center text-lg font-semibold text-blue-600">
-  //                     {pdf.title}
-  //                   </span>
-  //                 </Link>
-  //               ))
-  //             )}
-  //           </div>
-  //         </div>
-  //       )}
-
-  //       {/* Vision 2047 Section */}
-  //       {activeTab === 'Vision 2047' && (
-  //         <div>
-  //           <h2 className="border-purple-500 mb-4 border-b-2 pb-2 text-2xl font-bold text-slate-800">
-  //             Vision 2047
-  //           </h2>
-  //           <div>
-  //             {vision2047Pdfs.length === 0 ? (
-  //               <p>No PDFs available.</p>
-  //             ) : (
-  //               vision2047Pdfs.map((pdf, index) => (
-  //                 <Link
-  //                   key={index}
-  //                   to={`${ASSETS_BASE_URL_NEW}${pdf.link}`}
-  //                   className="flex flex-col items-center rounded-lg p-4 transition"
-  //                   target="_blank"
-  //                   rel="noopener noreferrer"
-  //                 >
-  //                   <img
-  //                     src={pdf.image || 'default-annual-report-image.jpg'}
-  //                     alt="Vision-2047"
-  //                     className="w-80 rounded-lg shadow-md"
-  //                   />
-  //                   <span className="mt-3 text-lg font-semibold text-blue-600">
-  //                     {pdf.title}
-  //                   </span>
-  //                 </Link>
-  //               ))
-  //             )}
-  //           </div>
-  //         </div>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
 
   return (
     <div className="mx-auto max-w-6xl rounded-lg bg-white p-4 shadow-lg sm:p-6 lg:p-8">
@@ -423,6 +168,8 @@ const Publications = () => {
               >
                 <option value="2024">2024</option>
                 <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
               </select>
             </div>
             {loading && <p>Loading...</p>}
@@ -457,8 +204,27 @@ const Publications = () => {
                         </a>
                         )
                       </>
+                    )}{' '}
+                    {pub.link && (
+                      <button
+                        lassName="inline-flex items-center space-x-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 transition-colors duration-150 ease-in-out hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2" // Added focus styles
+                        aria-label="Download or view publication PDF"
+                        // onClick={() => {
+                        //   window.open(
+                        //     `${ASSETS_BASE_URL_NEW}/${pub.link}`,
+                        //     '_blank'
+                        //   );
+                        // }}
+                        onClick={() => {
+                          window.open(
+                            `www.ncmrwf.gov.in/${pub.link}`,
+                            '_blank'
+                          );
+                        }}
+                      >
+                        Link
+                      </button>
                     )}
-                    .
                   </li>
                 ))}
               </ul>

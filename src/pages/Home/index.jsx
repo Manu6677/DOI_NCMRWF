@@ -39,7 +39,7 @@ const Home = () => {
           <VideoAndPartnerSection />
         </div>
 
-        {/* Bulletin board icon */}
+        {/*  oard icon */}
         <div
           role="button"
           className="fixed right-0 top-52 z-10 cursor-pointer rounded-l-md bg-orange-600 py-2 pl-2 pr-4 text-richblack-5"
