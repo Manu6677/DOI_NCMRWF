@@ -11,9 +11,6 @@ const ContactHead = () => {
       columns={columnsContactUs}
       data={ncmrwfHead}
     />
-    
-
-    
   );
 };
 export default ContactHead;

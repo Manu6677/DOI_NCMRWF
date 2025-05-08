@@ -15,7 +15,6 @@ const PQPFMap = () => {
           <Popup>Sample Marker for PQPF</Popup>
         </Marker>
       </MapContainer>
-
     </div>
   );
 };
