@@ -167,7 +167,8 @@ const ModelSubMenu = () => {
                 checked={selectedModel?.model_id === model.model_id}
                 onChange={() => handleRadioButtonChange(model)}
                 // Slightly larger radio button, better focus ring
-                className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+                // className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-blue-500 checked:border-blue-400 checked:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-[#003244]"
+                className="size-4 flex-shrink-0 cursor-pointer appearance-none rounded-full border border-blue-200 text-white checked:border-white checked:bg-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-[#003244]"
               />
               {/* Ensure text doesn't wrap awkwardly */}
               <span className="flex-grow truncate text-base capitalize">

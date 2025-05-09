@@ -6,9 +6,6 @@ import { fetchCyclonesUrl } from '../../../services/operations/specialProductsAp
 const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL_NEW;
 const BASE_PATH = process.env.REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH;
 
-// ASSETS_BASE_URL = REACT_APP_ASSETS_BASE_URL_NEW = "https://nwp.ncmrwf.gov.in"
-// BASE_PATH = REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH = "Data/mihir"
-
 function WeatherForecastPage() {
   const [cycle, setCycle] = useState('');
   const [mapImage, setMapImage] = useState('placeholder_map.png');

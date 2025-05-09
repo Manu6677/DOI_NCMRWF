@@ -14,7 +14,7 @@ const noticesData = [
       en: 'View/Download',
       hi: 'देखें/डाउनलोड करें',
     },
-    downloadLink: '/Vacancy%20Circular%20English.pdf',
+    downloadLink: '/Documents/Notices/Vacancy%20Circular%20English.pdf',
   },
   {
     srNo: 2,
@@ -26,7 +26,8 @@ const noticesData = [
       en: 'View/Download',
       hi: 'देखें/डाउनलोड करें',
     },
-    downloadLink: '/List_of_Empanelled_Book_Suppliers_in_NCMRWF.pdf',
+    downloadLink:
+      '/Documents/Notices/List_of_Empanelled_Book_Suppliers_in_NCMRWF.pdf',
   },
   {
     srNo: 3,
@@ -38,7 +39,7 @@ const noticesData = [
       en: 'View/Download',
       hi: 'देखें/डाउनलोड करें',
     },
-    downloadLink: '/Notic_Board/Notice-board-hindi-2020.pdf',
+    downloadLink: '/Documents/Notices/Notice-board-hindi-2020.pdf',
   },
 ];
 

@@ -18,7 +18,7 @@ const BulletinBoard = () => {
     const getBulletins = async () => {
       if (bulletins.length === 0) {
         const { data } = await fetchBulletinBoardPDFNames();
-        console.log('data bulletin', data);
+        // console.log('data bulletin', data);
         dispatch(setBulletinData(data));
       }
     };
@@ -38,7 +38,7 @@ const BulletinBoard = () => {
 
   return (
     <div className="h-[70vh] space-y-4 overflow-hidden rounded-lg bg-gradient-to-r from-blue-100 p-6 shadow-md">
-      <div className="scroll-container">
+      <div className="scroll-container custom-scroll-animation space-y-4 pt-32">
         {[...bulletins, ...bulletins].map((bulletin, idx) => (
           <div
             key={idx}
@@ -47,7 +47,7 @@ const BulletinBoard = () => {
             onMouseLeave={() => setIsHovered(false)}
           >
             <Link
-              to={`${ASSETS_BASE_URL}${bulletin?.link}`}
+              to={`${bulletin?.link}`}
               className="block text-blue-600 transition-colors duration-300 hover:text-blue-800"
               target="_blank"
               rel="noopener noreferrer"

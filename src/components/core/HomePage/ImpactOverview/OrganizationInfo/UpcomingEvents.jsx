@@ -19,8 +19,8 @@ import event4 from '../../../../../assets/images/events/ncmrwf-meet.png';
 import event5 from '../../../../../assets/images/events/IISF-2024_Banner.png';
 import event6 from '../../../../../assets/images/events/Screenshot_5.png';
 import event7 from '../../../../../assets/images/events/seminarrr.jpg';
-
-const eventImages = [event1, event2, event4, event5, event6, event7];
+import event0 from '../../../../../assets/images/events/international_tovs_program.png';
+const eventImages = [event0, event1, event2, event4, event5, event6, event7];
 
 const headlines = [
   {

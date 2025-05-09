@@ -21,7 +21,6 @@ const getThursdays = (year, month) => {
 
 const WeeklyPdfFetcher = () => {
   const { region, type } = useParams();
-  //   const [saturdays, setSaturdays] = useState([]);
   const [thursdays, setThursdays] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [pdfUrl, setPdfUrl] = useState('');
@@ -62,8 +61,6 @@ const WeeklyPdfFetcher = () => {
     const formattedType =
       type === 'weeklymean' ? 'Weekly-Mean' : 'Four-week-Mean';
 
-    // const baseUrl = 'https://nwp.ncmrwf.gov.in/Data/mihir'; // ✅ CORRECT domain for iframes
-
     let pdfName = '';
 
     if (formattedRegion === 'India-Region') {
@@ -79,7 +76,7 @@ const WeeklyPdfFetcher = () => {
     }
 
     const url = `${REACT_APP_ASSETS_BASE_URL_NEW}/${REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH}/${selected}/ERF_PROD/${formattedRegion}/${formattedType}/${pdfName}`;
-    console.log('pdfUrl', url);
+    // console.log('pdfUrl', url);
     setPdfUrl(url);
   };
 

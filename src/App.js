@@ -13,14 +13,25 @@ import DataMonitoring from './components/core/NcmnetPage/DataMonitoring';
 import DataDetailsPage from './components/core/NcmnetPage/DataMonitoring/DataDetailsPage';
 import DataTypesExplanationPage from './components/core/NcmnetPage/DataMonitoring/DataTypesExplanationPage';
 import RtmPortal from './components/core/NcmnetPage/RtmPortal';
-import ObservationMenu from './components/core/ObservationReport/ObservationMenu';
-import MonthlyObservation from './components/core/ObservationReport/MonthlyObservation';
-import DailyObservation from './components/core/ObservationReport/DailyObservation';
-import RegionSelection from './components/core/ERPReports/RegionSelection';
-import WeeklyPdfFetcher from './components/core/ERPReports/WeeklyPdfFetcher';
 
 // --- Lazy-Loaded Page/Feature Components ---
 // Structure/Core Pages
+const ObservationMenu = lazy(
+  () => import('./components/core/ObservationReport/ObservationMenu')
+);
+const MonthlyObservation = lazy(
+  () => import('./components/core/ObservationReport/MonthlyObservation')
+);
+const DailyObservation = lazy(
+  () => import('./components/core/ObservationReport/DailyObservation')
+);
+const RegionSelection = lazy(
+  () => import('./components/core/ERPReports/RegionSelection')
+);
+const WeeklyPdfFetcher = lazy(
+  () => import('./components/core/ERPReports/WeeklyPdfFetcher')
+);
+
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const DirectorDesk = lazy(
