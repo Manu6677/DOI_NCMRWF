@@ -30,7 +30,30 @@
   width: 20px; /* Adjust to a vertical bar */
   height: 12rem; /* Taller for better visualization */
   border-radius: 5px;
-  background: linear-gradient(to top, #8b0000, #bc1d00, #f13c00, #ff5d00, #ff7d00, #ff9c00, #ffbf00, #e1d509, #81d026, #2bcb4b, #17c59c, #02bff3, #0bacff, #1996ff, #406ff5, #6e45e9, #8325d7, #7417bf, #660ba7, #580594, #4b0082);
+  background: linear-gradient(
+    to top,
+    #8b0000,
+    #bc1d00,
+    #f13c00,
+    #ff5d00,
+    #ff7d00,
+    #ff9c00,
+    #ffbf00,
+    #e1d509,
+    #81d026,
+    #2bcb4b,
+    #17c59c,
+    #02bff3,
+    #0bacff,
+    #1996ff,
+    #406ff5,
+    #6e45e9,
+    #8325d7,
+    #7417bf,
+    #660ba7,
+    #580594,
+    #4b0082
+  );
 }
 
 .legend-labels {
