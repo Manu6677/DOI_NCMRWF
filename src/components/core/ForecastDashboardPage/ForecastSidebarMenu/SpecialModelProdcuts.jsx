@@ -80,7 +80,10 @@ const SpecialModelProducts = () => {
       selectedProductId === 30 ||
       selectedProductId === 31 ||
       selectedProductId === 32 ||
-      selectedProductId === 34
+      selectedProductId === 34 ||
+      selectedProductId === 35 ||
+      selectedProductId === 36 ||
+      selectedProductId === 37
     )
       return;
 
@@ -144,6 +147,11 @@ const SpecialModelProducts = () => {
     if (selectedProductId === 36) {
       hasNavigatedRef.current = true;
       window.location.href = `${REACT_APP_ASSETS_BASE_URL_NEW}/india-map.php`;
+      return;
+    }
+    if (selectedProductId === 37) {
+      hasNavigatedRef.current = true;
+      window.location.href = `${REACT_APP_ASSETS_BASE_URL_NEW}/mjo-charts.php`;
       return;
     }
   }, [selectedProductId, navigate]);

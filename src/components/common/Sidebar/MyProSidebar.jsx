@@ -36,9 +36,6 @@ const MyProSidebar = () => {
             className="relative right-0 flex cursor-pointer items-center justify-center"
             style={{ pointerEvents: 'auto', backgroundColor: 'transparent' }}
           >
-
-
-            
             <IoIosArrowDropleftCircle
               className={`absolute right-7 rotate-180 text-2xl transition-all duration-300 ${isCollapsed ? 'rotate-0' : 'rotate-180'}`}
             />
