@@ -39,6 +39,11 @@ const ObservationProductList = () => {
   }, []);
 
   const handleSelectProduct = async (product) => {
+    if (product?.id === 29) {
+      navigate('/observation-monitoring');
+      return;
+    }
+
     if (product?.id !== selectedObservationProductId) {
       dispatch(setObservationPage(1));
     }
@@ -73,6 +78,12 @@ const ObservationProductList = () => {
 
   useEffect(() => {
     if (selectedObservationProductId && observationUTC) {
+      console.log(
+        'selectedObservationProductId',
+        selectedObservationProductId,
+        'observationUTC',
+        observationUTC
+      );
       const selectedProduct = observationProducts.find(
         (product) => product.id === selectedObservationProductId
       );
