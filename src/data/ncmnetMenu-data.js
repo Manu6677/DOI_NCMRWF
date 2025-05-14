@@ -324,22 +324,22 @@ export const ncmnetMenuItems = [
     icon: FiBriefcase,
     path: '/ncmnet/rtm-portal',
   },
-  // {
-  //   id: 'datamon',
-  //   label: 'Data-Monitoring',
-  //   icon: FiEye,
-  //   path: '/ncmnet/data-monitoring',
-  // },
-  // {
-  //   id: 'gmltp',
-  //   label: 'Global Model Lightning Threat Product',
-  //   icon: FiCloudLightning,
-  //   path: '/ncmnet/global-model-lightning-threat-product',
-  // },
-  // {
-  //   id: 'orders',
-  //   label: 'Office Orders',
-  //   icon: FiFileText,
-  //   path: '/ncmnet/office-orders',
-  // },
+  {
+    id: 'datamon',
+    label: 'Data-Monitoring',
+    icon: FiEye,
+    path: '/ncmnet/data-monitoring',
+  },
+  {
+    id: 'gmltp',
+    label: 'Global Model Lightning Threat Product',
+    icon: FiCloudLightning,
+    path: '/ncmnet/global-model-lightning-threat-product',
+  },
+  {
+    id: 'orders',
+    label: 'Office Orders',
+    icon: FiFileText,
+    path: '/ncmnet/office-orders',
+  },
 ];

@@ -49,7 +49,8 @@ const ModelSubMenu = () => {
             modelsData.models[0]; // Fallback to the first model
 
           if (defaultModel) {
-            dispatch(setSelectedModel(defaultModel));
+            console.log('defaultModel selectedModel -> ', selectedModel);
+            // dispatch(setSelectedModel(defaultModel));
           }
         }
       } catch (error) {
@@ -108,10 +109,10 @@ const ModelSubMenu = () => {
       // Navigate only after selecting a new model if needed,
       // or perhaps navigation isn't needed here if the dashboard updates based on Redux state.
       // If navigation is required on *every* click, keep it here. If only on *change*, keep it inside the if block.
-      // navigate('/forecast-dashboard/');
+      navigate('/forecast-dashboard/model-products');
     }
     // If navigation should happen even if clicking the same model, keep it outside the 'if'
-    navigate('/forecast-dashboard/');
+    navigate('/forecast-dashboard/model-products');
   };
 
   return (

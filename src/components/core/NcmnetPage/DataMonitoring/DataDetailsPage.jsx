@@ -1,7 +1,4 @@
-// src/pages/DataDetailsPage.jsx
-
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 
 // Ensure this matches your environment variable name
 const baseUrl = process.env.REACT_APP_ASSETS_BASE_URL_NEW || '';
@@ -49,21 +46,20 @@ const sampleBufrData = [
   { type: 'vadwnd', hourly: 155, monthly: 161, departure: -4 },
 ];
 // --- End Sample Data ---
-
 // Enhanced color function with more distinct hover states
 const getColorForDeparture = (departure) => {
   const dep = Number(departure);
   if (isNaN(dep))
-    return 'text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-50';
+    return 'text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-50'; // Default/Invalid
   if (dep < -30)
-    return 'text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300';
+    return 'text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300'; // Abnormal Shortage
   if (dep < -5)
-    return 'text-orange-700 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300';
+    return 'text-orange-700 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300'; // Shortage
   if (dep <= 5)
     return 'text-gray-800 hover:text-black bg-white hover:bg-gray-50 border-slate-300 hover:border-slate-400'; // Normal
   if (dep <= 30)
-    return 'text-green-700 hover:text-green-900 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300';
-  return 'text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border-blue-200 hover:border-blue-300'; // > 30
+    return 'text-green-700 hover:text-green-900 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300'; // Overage
+  return 'text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border-blue-200 hover:border-blue-300'; // Abnormal Overage (> 30)
 };
 
 const formatDateYYYYMMDD = (date) => {
@@ -74,30 +70,82 @@ const formatDateYYYYMMDD = (date) => {
 };
 
 const DataDetailsPage = () => {
-  const { dataType, cycleTime } = useParams();
+  const { dataType, cycleTime } = useParams(); // cycleTime e.g., "00z", "12z"
+  const location = useLocation();
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const dateString = formatDateYYYYMMDD(yesterday);
-  const hourString = cycleTime ? cycleTime.substring(0, 2) : '00';
-  const dateTimeString = `${dateString}${hourString}`;
+  // --- Date Objects ---
+  const yesterdayDateObj = new Date();
+  yesterdayDateObj.setDate(yesterdayDateObj.getDate() - 1);
 
+  const todayDateObj = new Date();
+
+  // --- Parse Hours from Parameters ---
+  // Hour string from the current page's cycleTime (e.g., "00", "12")
+  const hourStringFromCycleTime = cycleTime ? cycleTime.substring(0, 2) : '00';
+  // Numerical hour of the current page's cycle (e.g., 0, 12)
+  const currentCycleHour = cycleTime
+    ? parseInt(cycleTime.substring(0, 2), 10)
+    : NaN;
+
+  // Get highlight parameter from URL (e.g., "00z", "18z")
+  const queryParams = new URLSearchParams(location.search);
+  const highlightParam = queryParams.get('highlight');
+  let highlightHour = NaN; // Default to NaN if not present or invalid
+  if (highlightParam) {
+    const parsedHighlightHour = parseInt(highlightParam.substring(0, 2), 10);
+    if (!isNaN(parsedHighlightHour)) {
+      highlightHour = parsedHighlightHour;
+    }
+  }
+
+  // --- Determine the Chosen Date based on the new rule ---
+  // Default to yesterday's date object
+  let chosenDateObj = yesterdayDateObj;
+
+  // If highlightParam and cycleTime were validly parsed to numerical hours, compare them
+  if (!isNaN(highlightHour) && !isNaN(currentCycleHour)) {
+    if (highlightHour >= currentCycleHour) {
+      chosenDateObj = todayDateObj; // Use today if highlightedCycle is >= currentCycle
+    }
+  }
+  // If highlightParam is missing/invalid, or currentCycleHour is invalid, chosenDateObj remains yesterdayDateObj.
+
+  // Format the chosen date to YYYYMMDD string
+  const chosenDateYYYYMMDD = formatDateYYYYMMDD(chosenDateObj);
+
+  // --- Date strings for various parts of the page, derived from chosenDateYYYYMMDD ---
+  // Date for page title subtitle
+  const dateStringForTitle = chosenDateYYYYMMDD;
+
+  // DateTime string for the grid of `currentData` image links (YYYYMMDDHH)
+  const dateTimeStringForCurrentDataImages = `${chosenDateYYYYMMDD}${hourStringFromCycleTime}`;
+
+  // DateTime string for PDF links (YYYYMMDDHH) - also follows the new rule
+  const pdfDateTimeString = `${chosenDateYYYYMMDD}${hourStringFromCycleTime}`;
+
+  // --- Display Strings ---
   const displayDataType = dataType
     ? dataType.charAt(0).toUpperCase() + dataType.slice(1)
     : 'Unknown';
   const displayCycleTime = cycleTime ? cycleTime.toUpperCase() : 'Unknown';
 
-  const currentData = sampleBufrData;
+  // --- Data ---
+  const currentData = sampleBufrData; // Using the placeholder
   const loading = false;
-  const error = null; // Assume no error for static data
+  const error = null;
 
-  // --- Plot Image URL ---
-  const plotImageUrl = `${baseUrl}/data-monitoring/image/PLOT/percentage_${hourString}_${dataType}.png`;
+  // --- URLs ---
+  // URL for the main plot image on the right. Its structure doesn't include YYYYMMDD.
+  const plotImageUrl = `${baseUrl}/data-monitoring/image/PLOT/percentage_${hourStringFromCycleTime}_${dataType}.png`;
+
+  // URLs for PDF links, now using the `pdfDateTimeString` derived from `chosenDateObj`
+  const receptionStatusPdfUrl = `${baseUrl}/data-monitoring/image/update-assimlation/${pdfDateTimeString}/Reception_Status_Update.pdf`;
+  const assimilationStatusPdfUrl = `${baseUrl}/data-monitoring/image/update-assimlation/${pdfDateTimeString}/Assimilation_Status_Update.pdf`;
 
   // --- Loading / Error / Validation ---
   if (loading)
     return (
-      <div className="text-gray-700 flex h-screen items-center justify-center text-xl font-semibold">
+      <div className="flex h-screen items-center justify-center text-xl font-semibold text-slate-700">
         Loading details...
       </div>
     );
@@ -117,19 +165,17 @@ const DataDetailsPage = () => {
   return (
     <div className="from-sky-100 min-h-screen bg-gradient-to-br via-white to-orange-100 p-4 pt-6 sm:p-6 lg:p-10">
       <div className="mx-auto max-w-7xl">
-        {' '}
-        {/* Limit overall width */}
-        {/* Header Section */}
         <header className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             NGFS Dump Data Counts Time Series Plots
           </h1>
+          {/* Subtitle now uses dateStringForTitle which reflects the chosenDateYYYYMMDD */}
           <h2 className="text-indigo-700 mt-2 text-xl font-medium sm:text-2xl">
-            Valid {displayCycleTime} {displayDataType} Cycle (Date: {dateString}
-            )
+            Valid {displayCycleTime} {displayDataType} Cycle (Date:{' '}
+            {dateStringForTitle})
           </h2>
         </header>
-        {/* Top Navigation Links - with separators */}
+
         <nav className="mb-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm sm:text-base">
           <Link
             to="/ncmnet/explanation-of-data-types"
@@ -141,7 +187,7 @@ const DataDetailsPage = () => {
             |
           </span>
           <Link
-            to="#"
+            to="#" // Placeholder
             className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
           >
             GFS Summary
@@ -149,43 +195,48 @@ const DataDetailsPage = () => {
           <span className="text-gray-400" aria-hidden="true">
             |
           </span>
-          <Link
-            to="#"
+          {/* PDF links now use URLs derived from chosenDateObj */}
+          <a
+            href={receptionStatusPdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
           >
             Reception Status
-          </Link>
+          </a>
           <span className="text-gray-400" aria-hidden="true">
             |
           </span>
-          <Link
-            to="#"
+          <a
+            href={assimilationStatusPdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
           >
-            Departure Diff
-          </Link>
+            Assimilation Departure Difference
+          </a>
         </nav>
-        {/* Main Content Grid */}
+
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Left Column (Grid + Legend) */}
           <div className="space-y-8 lg:col-span-2">
-            {/* Data Type Links Grid Card */}
             <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg">
               <h3 className="text-gray-800 mb-5 text-center text-base font-semibold">
                 View Time Series Plot (opens image in new tab)
               </h3>
               <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9">
                 {currentData.map((item) => {
-                  const imageUrl = `${baseUrl}/data-monitoring/image/${dataType}/${dateTimeString}/${item.type}.png`;
+                  // Image URLs use dateTimeStringForCurrentDataImages derived from chosenDateObj
+                  const imageUrl = `${baseUrl}/data-monitoring/image/${dataType}/${dateTimeStringForCurrentDataImages}/${item.type}.png`;
                   return (
                     <a
                       key={item.type}
                       href={imageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      title={`View plot for ${item.type}`} // Add title attribute
-                      // Apply dynamic color, padding, border, shadow, focus rings
-                      className={`focus:ring-indigo-500 flex h-10 items-center justify-center rounded-md border px-1 text-center text-xs font-semibold shadow-sm transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 sm:h-11 sm:text-sm ${getColorForDeparture(item.departure)}`}
+                      title={`View plot for ${item.type}`}
+                      className={`focus:ring-indigo-500 flex h-10 items-center justify-center rounded-md border px-1 text-center text-xs font-semibold shadow-sm transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 sm:h-11 sm:text-sm ${getColorForDeparture(
+                        item.departure
+                      )}`}
                     >
                       {item.type}
                     </a>
@@ -194,16 +245,13 @@ const DataDetailsPage = () => {
               </div>
             </section>
 
-            {/* Explanation of Colors Legend Card */}
             <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg">
               <h3 className="text-gray-800 mb-5 text-center text-base font-semibold">
                 Explanation of Colors (based on Departure %)
               </h3>
               <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm md:grid-cols-2">
-                {/* Legend Items - slightly larger squares and text */}
                 <div className="flex items-start gap-3">
-                  {' '}
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-red-600"></span>{' '}
+                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-red-600"></span>
                   <div>
                     <strong className="font-semibold text-red-700">
                       &lt; -30%:
@@ -212,8 +260,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {' '}
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-orange-500"></span>{' '}
+                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-orange-500"></span>
                   <div>
                     <strong className="font-semibold text-orange-700">
                       -30% to -5%:
@@ -222,8 +269,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {' '}
-                  <span className="border-gray-400 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-white"></span>{' '}
+                  <span className="border-gray-400 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-white"></span>
                   <div>
                     <strong className="text-gray-800 font-semibold">
                       -5% to +5%:
@@ -232,8 +278,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {' '}
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-green-600"></span>{' '}
+                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-green-600"></span>
                   <div>
                     <strong className="font-semibold text-green-700">
                       +5% to +30%:
@@ -242,8 +287,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  {' '}
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-blue-600"></span>{' '}
+                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-blue-600"></span>
                   <div>
                     <strong className="font-semibold text-blue-700">
                       &gt; +30%:
@@ -254,7 +298,9 @@ const DataDetailsPage = () => {
               </div>
               <div className="mt-8 text-center">
                 <Link
-                  to="#" // Replace with actual link destination
+                  to={`${baseUrl}/data-monitoring/information_pdf/ColorCoding_Criteria.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center rounded-md bg-red-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md transition duration-200 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                   More Information
@@ -263,7 +309,6 @@ const DataDetailsPage = () => {
             </section>
           </div>
 
-          {/* Right Column (Plot Image) */}
           <aside className="lg:col-span-1">
             <div className="rounded-xl border border-slate-200 bg-white p-5 text-center shadow-lg">
               <h3 className="text-gray-800 mb-4 text-base font-semibold">
@@ -271,28 +316,23 @@ const DataDetailsPage = () => {
               </h3>
               <div className="flex min-h-[200px] items-center justify-center overflow-hidden rounded-md border border-slate-300 bg-slate-50">
                 <img
-                  src={plotImageUrl}
+                  src={plotImageUrl} // This URL structure is not affected by chosenDateObj
                   alt={`BUFR Dump Plot for ${displayCycleTime} ${displayDataType}`}
-                  className="h-auto w-full max-w-full object-contain" // Ensure image scales nicely
-                  // Basic error handling: display placeholder text if image fails
+                  className="h-auto w-full max-w-full object-contain"
                   onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.style.display = 'none'; // Hide broken image icon
-                    // Optionally add a placeholder element here
+                    currentTarget.onerror = null;
+                    currentTarget.style.display = 'none';
                     const errorDiv = document.createElement('div');
                     errorDiv.textContent = 'Plot image not available.';
                     errorDiv.className = 'p-4 text-sm text-red-600';
                     currentTarget.parentNode.appendChild(errorDiv);
                   }}
                 />
-                {/* Placeholder text in case onError doesn't work or for initial state */}
-                {/* <p className="p-4 text-sm text-slate-400">Loading plot...</p> */}
               </div>
             </div>
           </aside>
-        </div>{' '}
-        {/* End Main Content Grid */}
-        {/* Footer Disclaimer */}
+        </div>
+
         <footer className="mt-12 border-t border-slate-300 pt-8 text-center">
           <p className="mx-auto max-w-2xl text-xs text-slate-500">
             Disclaimer : NCMRWF is a Research and Development Organization. The
@@ -300,9 +340,8 @@ const DataDetailsPage = () => {
             Weather Prediction(NWP) models being run at NCMRWF.
           </p>
         </footer>
-      </div>{' '}
-      {/* End Max Width Container */}
-    </div> // End Background Gradient Div
+      </div>
+    </div>
   );
 };
 

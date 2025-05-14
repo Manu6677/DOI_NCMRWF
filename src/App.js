@@ -232,7 +232,10 @@ function App() {
           <Route element={<ForecastDashboard />}>
             {' '}
             {/* Keep this if ForecastDashboard provides its own sub-layout/context */}
-            <Route path="forecast-dashboard/*" element={<ModelProducts />} />
+            <Route
+              path="forecast-dashboard/model-products"
+              element={<ModelProducts />}
+            />
             <Route
               path="forecast-dashboard/special-products"
               element={<SpecialModelProdcuts />}

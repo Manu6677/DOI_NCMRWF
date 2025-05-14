@@ -1,25 +1,47 @@
-const Pagination = ({ page, totalPages, onPageChange }) => {
+import TooltipButton from './TooltipButton';
+
+const Pagination = ({ page, totalPages, onPageChange, showHpa = false }) => {
+  const HPA_LEVELS = [200, 500, 700, 850, 925];
+
   return (
-    <div className="mt-6 flex justify-center gap-4">
-      <button
-        className="rounded-lg bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
-      >
-        Previous
-      </button>
-
-      <span className="text-lg font-semibold">
-        Page {page} of {totalPages}
-      </span>
-
-      <button
-        className="rounded-lg bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
-      >
-        Next
-      </button>
+    <div className="mt-6 flex justify-center gap-6">
+      {showHpa ? (
+        <>
+          <TooltipButton
+            label="Previous"
+            tooltip="Go to previous HPA level"
+            onClick={() => onPageChange(page - 1)}
+            disabled={page === 1}
+          />
+          <span className="self-center text-lg font-semibold">
+            {HPA_LEVELS[page - 1]} hPa
+          </span>
+          <TooltipButton
+            label="Next"
+            tooltip="Go to next HPA level"
+            onClick={() => onPageChange(page + 1)}
+            disabled={page === totalPages}
+          />
+        </>
+      ) : (
+        <>
+          <TooltipButton
+            label="Previous"
+            tooltip="Go to previous page"
+            onClick={() => onPageChange(page - 1)}
+            disabled={page === 1}
+          />
+          <span className="self-center text-lg font-semibold">
+            Page {page} of {totalPages}
+          </span>
+          <TooltipButton
+            label="Next"
+            tooltip="Go to next page"
+            onClick={() => onPageChange(page + 1)}
+            disabled={page === totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };

@@ -23,7 +23,7 @@ const ModelProductsSubMenu = () => {
 
   const handleSelectItem = useCallback(
     (modelProduct) => {
-      navigate('/forecast-dashboard/');
+      navigate('/forecast-dashboard/model-products');
       dispatch(setSelectedProduct(modelProduct));
     },
     [dispatch]

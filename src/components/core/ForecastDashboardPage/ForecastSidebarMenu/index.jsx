@@ -2,12 +2,15 @@ import ModelSubMenu from './ModelSubMenu';
 import ModelProductsSubMenu from './ModelProductsSubMenu';
 import ProductsList from './ProductsList';
 import ObservationProductList from './ObservationProductList';
+import { useSelector } from 'react-redux';
 
 const ForecastSidebarMenu = () => {
+  const selectedModel = useSelector((state) => state.forecast.selectedModel);
+
   return (
     <div>
       <ModelSubMenu />
-      <ModelProductsSubMenu />
+      {selectedModel && <ModelProductsSubMenu />}
 
       <hr />
       <ProductsList />
