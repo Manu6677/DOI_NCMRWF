@@ -20,6 +20,9 @@ import {
   FiBarChart,
   FiCalendar,
   FiRefreshCcw,
+  FiZap,
+  FiCheckCircle,
+  FiClock,
 } from 'react-icons/fi'; // Example icons
 
 export const ncmnetMenuItems = [
@@ -333,8 +336,21 @@ export const ncmnetMenuItems = [
   {
     id: 'gmltp',
     label: 'Global Model Lightning Threat Product',
-    icon: FiCloudLightning,
-    path: '/ncmnet/global-model-lightning-threat-product',
+    icon: FiZap,
+    children: [
+      {
+        id: 'forecast',
+        label: 'Forecast',
+        icon: FiClock,
+        path: '/ncmnet/global-model-lightning-threat-product/forecast',
+      },
+      {
+        id: 'verification',
+        label: 'Verification',
+        icon: FiCheckCircle,
+        path: '/ncmnet/global-model-lightning-threat-product/verification',
+      },
+    ],
   },
   {
     id: 'orders',

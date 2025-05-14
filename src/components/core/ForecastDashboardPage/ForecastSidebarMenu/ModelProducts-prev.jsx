@@ -211,22 +211,18 @@ const ModelProducts = () => {
     });
 
   return (
-    <div className="flex max-h-screen flex-col">
-      {' '}
-      {/* Outermost container, fixed to screen height */}
-      {/* Main content area + controls container.
-          - flex-1: Takes available vertical space after pagination.
-          - flex-row-reverse: Positions controls (first child) to the right.
-          - overflow-hidden: Explicitly prevent scrolling on this container. Content must fit.
-      */}
-      <div className="flex flex-1 flex-row-reverse overflow-hidden p-4 sm:p-6">
-        {/* Controls Section: Positioned to the right.
-            - Its height is determined by its content.
-            - flex-shrink-0: Prevents this column from shrinking horizontally.
-        */}
-        <div className="my-4 ml-4 flex h-full w-full max-w-xs flex-shrink-0 flex-col rounded-md bg-slate-50 p-6 shadow sm:max-w-sm md:max-w-md">
+    // Use flex column for overall page structure to better manage footer/pagination
+    <div className="flex h-screen flex-col">
+      <div className="flex-grow overflow-auto p-4 sm:p-6">
+        {' '}
+        {/* Added flex-grow to allow this section to take available space */}
+        {/* Breadcrumbs */}
+        {/* Pass items to Breadcrumbs, assuming it can take an array of breadcrumb objects */}
+        <Breadcrumbs items={breadcrumbItems} />
+        {/* Controls Section: Added margin-bottom and flex-wrap for responsiveness */}
+        <div className="my-4 flex flex-wrap items-center gap-4 rounded-md bg-slate-50 p-2 shadow">
           {' '}
-          {/* Added h-full, p-6; removed gap */}
+          {/* Added padding, bg, rounded, shadow for better visual grouping */}
           {/* UTC Change Component */}
           <div className="flex items-center">
             <ChangeUTC
@@ -236,9 +232,7 @@ const ModelProducts = () => {
           </div>
           {/* Forecast Hours Selection */}
           {forecastHours.length > 0 && (
-            <div className="mt-6 flex items-center">
-              {' '}
-              {/* Added mt-6 for spacing */}
+            <div className="flex items-center">
               <ForecastHours
                 selectedHour={selectedForecastHour}
                 onSelect={setSelectedForecastHour}
@@ -248,18 +242,16 @@ const ModelProducts = () => {
           )}
           {/* ---- City Dropdown ---- */}
           {cityNames && cityNames.length > 0 && (
-            <div className="mt-6 flex flex-col items-start">
-              {' '}
-              {/* Added mt-6 for spacing */}
+            <div className="flex items-center">
               <label
                 htmlFor="city-select"
-                className="mb-1 text-sm font-medium text-slate-700"
+                className="mr-2 text-sm font-medium text-slate-700" // Slightly smaller label
               >
                 City:
               </label>
               <Select
                 id="city-select"
-                isDisabled={loading} // Assuming 'loading' is a prop or state available here
+                isDisabled={loading}
                 options={cityNames[0]
                   ?.slice()
                   .sort((a, b) => a.localeCompare(b))
@@ -267,121 +259,101 @@ const ModelProducts = () => {
                     value: city,
                     label: city,
                   }))}
-                value={{ label: selectedCity, value: selectedCity }} // Assuming 'selectedCity' is a prop/state
-                onChange={(option) => setSelectedCity(option.value)} // Assuming 'setSelectedCity' is a prop/function
-                className="w-full min-w-[180px] text-sm"
+                value={{ label: selectedCity, value: selectedCity }}
+                onChange={(option) => setSelectedCity(option.value)}
+                className="min-w-[180px] text-sm" // Slightly smaller min-width and text
                 placeholder="Select city..."
                 isSearchable
+                // styles prop can be used for deeper customization of react-select if needed
               />
             </div>
           )}
-          {/* Spacer / Footer element pushed to the bottom */}
-          {/* This div uses mt-auto to consume remaining vertical space, pushing itself to the bottom.
-              It provides a visual anchor and makes the layout feel more complete.
-          */}
-          <div className="mt-auto pt-6 text-center">
-            {' '}
-            {/* mt-auto is key here, pt-6 for spacing above the line */}
-            <hr className="border-slate-300" />
-            {/* Optionally, you could add very subtle text below the line if desired:
-                <p className="mt-2 text-xs text-slate-400">Filter Options</p>
-            */}
-          </div>
         </div>
-        {/* Main Content Area Wrapper (Products, Metadata, Messages)
-            - flex-1: Takes available horizontal space to the left of controls.
-            - overflow-hidden: Explicitly prevent scrolling. Content (grids/lists) must fit.
-                             Its height is constrained by the parent flex row.
-        */}
-        <div className="flex-1 overflow-scroll">
-          {/* Loading State */}
-          {loading && (
-            <div className="flex h-full items-center justify-center py-10">
-              {' '}
-              {/* h-full to fill available vertical space */}
-              <Spinner size="12" />
-            </div>
-          )}
-
-          {/* No Products Available Message */}
-          {!loading && products.length === 0 && metaData.length === 0 && (
-            <div className="flex h-full items-center justify-center py-10">
-              {' '}
-              {/* h-full for centering */}
-              <p className="text-center text-lg text-slate-500">
-                No forecast products available.
-              </p>
-            </div>
-          )}
-
-          {/* Product Display Grid
-              The total height of this grid (number of rows * card height + gaps)
-              is CRITICAL and must be small enough to fit without causing overflow.
-              Adjust items per page and ProductCard's internal image height (e.g., h-32, h-24) accordingly.
-          */}
-          {!loading && products.length > 0 && (
+        {/* Loading State: Centered Spinner */}
+        {loading && (
+          <div className="flex h-64 items-center justify-center">
+            {' '}
+            {/* Container for centering spinner */}
+            <Spinner size="12" /> {/* Increased size for better visibility */}
+          </div>
+        )}
+        {/* No Products Available Message: Added margin-top for better spacing */}
+        {!loading && products.length === 0 && metaData.length === 0 && (
+          <p className="py-10 text-center text-lg text-slate-500">
+            {' '}
+            {/* Adjusted text color and padding */}
+            No forecast products available.
+          </p>
+        )}
+        {/* Product Display Grid: Key area for image sizing is within ProductCard component */}
+        {/* The `ProductCard` itself should handle how the image is displayed (e.g., aspect ratio, object-fit) */}
+        {!loading && products.length > 0 && (
+          <div
+            className={`grid gap-6 ${
+              // If single product, center it and give it more space.
+              // ProductCard internal styling for image is crucial.
+              products.length === 1
+                ? 'grid-cols-1 place-items-center' // Center the single card in the grid cell
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' // More responsive grid
+            }`}
+          >
+            {products.map((imageUrl, index) => (
+              <ProductCard
+                key={index}
+                imageUrl={imageUrl}
+                onClick={() => setPreviewProduct(imageUrl)}
+                // For a single product, allow it to be wider.
+                // The ProductCard should manage its internal image display to prevent excessive height.
+                // Example: max-w-full for grid items, or a specific max-w for single item.
+                Class={
+                  products.length === 1
+                    ? 'w-full max-w-2xl' // Larger max-width for a single centered image/card
+                    : 'w-full' // Full width within its grid cell
+                }
+                // Suggestion: ProductCard could have an 'aspectRatio' prop or similar
+                // e.g., aspectRatio="16/9" to enforce consistent image dimensions.
+              />
+            ))}
+          </div>
+        )}
+        {/* MetaData Display Grid: Similar styling to products grid */}
+        {!loading &&
+          metaData.length > 0 && ( // Assuming metaData is an array of objects
             <div
-              className={`grid gap-4 p-4 sm:gap-6 ${
-                products.length === 1
-                  ? 'grid-cols-1 place-items-center' // Single item centered
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' // Multiple items in a grid
+              className={`mt-6 grid gap-6 ${
+                // Added mt-6 if products are also displayed, otherwise it's fine
+                metaData.length === 1 // If only one metadata item
+                  ? 'grid-cols-1 place-items-center'
+                  : 'grid-cols-1 md:grid-cols-2' // Adjust as needed for metadata card content
               }`}
             >
-              {products.map((imageUrl, index) => (
-                <ProductCard
-                  key={index}
-                  imageUrl={imageUrl}
-                  onClick={() => setPreviewProduct(imageUrl)}
-                  Class={
-                    // Style for the card container
-                    products.length === 1
-                      ? 'w-full max-w-lg rounded-lg shadow-md overflow-hidden' // Single card
-                      : 'w-full rounded-lg shadow-md overflow-hidden' // Card in grid
-                  }
-                  // IMPORTANT: Inside ProductCard, use compact image heights (e.g., className="w-full h-32 object-cover")
-                  // and ensure text content is minimal or truncated.
-                />
-              ))}
-            </div>
-          )}
-
-          {/* MetaData Display
-              This section uses `flex flex-col`, so items stack vertically.
-              This will consume vertical space rapidly. Ensure very few items are shown
-              or each card is extremely compact if "no scroll" is a strict requirement.
-          */}
-          {!loading && metaData.length > 0 && (
-            <div
-              className={`mt-6 flex flex-col gap-4 p-4 sm:gap-6 ${
-                metaData.length === 1 ? 'items-center' : '' // Center if single metadata item
-              }`}
-            >
+              {/* Ensure metaData is an array before mapping */}
               {(Array.isArray(metaData) ? metaData : [metaData]).map(
                 (item, index) => (
-                  <ProductCard
+                  <ProductCard // Reusing ProductCard for metadata; ensure it can handle text content well
                     key={index}
-                    imageUrl={item?.link || item?.metadata?.link || ''}
+                    imageUrl={item?.link || item?.metadata?.link || ''} // Provide a fallback image if necessary or style differently if no image
                     title={item?.title}
-                    description={item?.description} // Ensure ProductCard truncates long descriptions
-                    onClick={() => setPreviewProduct(item.link)}
+                    description={item?.description}
+                    onClick={() => setPreviewProduct(item.link)} // Ensure item.link is valid for preview
                     Class={
                       metaData.length === 1
-                        ? 'w-full max-w-lg rounded-lg shadow-md overflow-hidden' // Single metadata item
-                        : 'w-full rounded-lg shadow-md overflow-hidden' // Multiple, will stack vertically
+                        ? 'w-full max-w-lg' // Max width for a single metadata card
+                        : 'w-full'
                     }
-                    // IMPORTANT: ProductCard for metadata needs to be very compact in height.
                   />
                 )
               )}
             </div>
           )}
-        </div>{' '}
-        {/* End of Main Content Area Wrapper */}
+        {/* Pagination Controls: Added margin-top for spacing */}
       </div>{' '}
-      {/* End of main content (fixed height, no scroll) flex container */}
-      {/* Pagination container at the bottom - its height is fixed / content-based */}
+      {/* End of scrollable content area */}
+      {/* Pagination container at the bottom */}
       {!loading && totalPages > 1 && (
         <div className="border-t border-slate-200 bg-slate-50 p-4">
+          {' '}
+          {/* Added some styling to pagination container */}
           <Pagination
             page={page}
             totalPages={totalPages}
@@ -391,6 +363,8 @@ const ModelProducts = () => {
         </div>
       )}
       {/* Image Preview Modal */}
+      {/* The ProductImageModal should internally handle image sizing to fit the viewport */}
+      {/* e.g., max-width: 90vw, max-height: 90vh, object-fit: contain for the image */}
       {previewProduct && (
         <ProductImageModal
           imageUrl={previewProduct}

@@ -64,7 +64,7 @@ const ProductsList = () => {
         selectedUtcValue,
         selectedSpecialForecastHour,
         specialProductsPage,
-        4
+        1
       );
       if (response) {
         dispatch(setTotalSpecialProductsPages(response.totalPages));
@@ -143,6 +143,7 @@ const ProductsList = () => {
                       <MenuItem
                         key={product.id}
                         style={{ backgroundColor: '#003244', color: '#ffffff' }}
+                        className="group relative"
                       >
                         <label className="flex cursor-pointer items-center space-x-4">
                           <input
@@ -157,6 +158,9 @@ const ProductsList = () => {
                             {product.product_name}
                           </span>
                         </label>
+                        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+                          {product.product_name}
+                        </div>
                       </MenuItem>
                     ))}
                   </SubMenu>
@@ -165,6 +169,7 @@ const ProductsList = () => {
                     <MenuItem
                       key={product.id}
                       style={{ backgroundColor: '#003244', color: '#ffffff' }}
+                      className="group relative"
                     >
                       <label className="flex cursor-pointer items-center space-x-4">
                         <input
@@ -180,6 +185,9 @@ const ProductsList = () => {
                           {product.product_name}
                         </span>
                       </label>
+                      <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+                        {product.product_name}
+                      </div>
                     </MenuItem>
                   ))
                 )
@@ -190,6 +198,7 @@ const ProductsList = () => {
             <MenuItem
               key={product.id}
               style={{ backgroundColor: '#003244', color: '#ffffff' }}
+              className="group relative"
             >
               <label className="flex cursor-pointer items-center space-x-4">
                 <input
@@ -204,6 +213,9 @@ const ProductsList = () => {
                   {product.product_name}
                 </span>
               </label>
+              <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+                {product.product_name}
+              </div>
             </MenuItem>
           ))
         )

@@ -265,7 +265,7 @@ const SpecialModelProducts = () => {
             onPageChange={(newPage) =>
               dispatch(setSpecialProductsPage(newPage))
             }
-            // showHpa={true} // Add if this prop is relevant for SpecialModelProducts
+            showHpa={true}
           />
         </div>
       )}

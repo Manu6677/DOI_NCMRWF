@@ -152,7 +152,7 @@ const ModelSubMenu = () => {
               color: '#e0f2ff', // Default text color
             }}
             // Added hover effect class (assuming you have Tailwind or CSS for this)
-            className="hover:bg-blue-800" // Example hover effect using Tailwind
+            className="group relative hover:bg-blue-800" // Example hover effect using Tailwind
             // Add the title attribute for the tooltip
             // It will show model_name if available, otherwise alias
             title={model.model_name || model.alias}
@@ -176,6 +176,10 @@ const ModelSubMenu = () => {
                 {model.alias}
               </span>
             </label>
+            {/* Custom Tooltip (styled like TooltipButton's tooltip) */}
+            <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+              {model.alias} {/* Tooltip content */}
+            </div>
           </MenuItem>
         ))}
     </SubMenu>

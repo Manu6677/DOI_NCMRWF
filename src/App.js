@@ -123,8 +123,20 @@ const NcmrwfAnalysisVerification = lazy(
 const GfsBiasCorrectedTemperatures = lazy(
   () => import('./components/core/NcmnetPage/GfsBiasCorrectedTemperatures')
 );
-const ForecastVerification = lazy(
-  () => import('./components/core/NcmnetPage/ForecastVerification')
+const LightningThreatForecastPage = lazy(
+  () =>
+    import(
+      './components/core/NcmnetPage/GlobalModelThreat/LightningThreatForecastPage'
+    )
+);
+const LightningThreatVerifications = lazy(
+  () =>
+    import(
+      './components/core/NcmnetPage/GlobalModelThreat/LightiningThreatVerifications'
+    )
+);
+const OfficeOrdersPage = lazy(
+  () => import('./components/core/NcmnetPage/OfficeOrdersPage')
 );
 
 // Footer Links / Misc Pages
@@ -312,6 +324,18 @@ function App() {
             <Route
               path="/ncmnet/data-monitoring/:dataType/:cycleTime"
               element={<DataDetailsPage />}
+            />
+            <Route
+              path="/ncmnet/gfs-bias-corrected-temperatures/forecast"
+              element={<LightningThreatForecastPage />}
+            />
+            <Route
+              path="/ncmnet/gfs-bias-corrected-temperatures/verification"
+              element={<LightningThreatVerifications />}
+            />
+            <Route
+              path="/ncmnet/office-orders"
+              element={<OfficeOrdersPage />}
             />
           </Route>
         </Route>

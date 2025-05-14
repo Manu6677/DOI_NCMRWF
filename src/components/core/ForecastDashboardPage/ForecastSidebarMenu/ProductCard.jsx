@@ -17,7 +17,7 @@ const ProductCard = ({ imageUrl, title = '', description = '', onClick }) => {
 
   return (
     <div
-      className="group relative cursor-pointer overflow-hidden rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-lg"
+      className="group relative cursor-pointer overflow-hidden overflow-y-scroll rounded-lg bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-lg"
       onClick={!isPdf ? onClick : undefined}
       role="button"
       tabIndex={0}
