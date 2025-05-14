@@ -36,7 +36,6 @@ const BimstecProducts = () => {
     (item) => item.hour === selectedHour
   );
   const selectedUrls = selectedForecast ? selectedForecast.urls : [];
-  // console.log(selectedUrls);
 
   return (
     <div className="p-4">
@@ -52,6 +51,12 @@ const BimstecProducts = () => {
           onSelect={handleHourSelect}
         />
       </div>
+
+      {!loading && selectedUrls.length === 0 && (
+        <p className="text-gray-600 mt-6 text-center text-base font-medium italic tracking-wide">
+          Please select an option from the left sidebar to view Bimstec charts.
+        </p>
+      )}
 
       {/* Product Display Grid */}
       {!loading && selectedUrls.length > 0 && (
