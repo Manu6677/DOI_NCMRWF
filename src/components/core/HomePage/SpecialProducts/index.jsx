@@ -55,7 +55,7 @@ const SpecialProducts = () => {
 
         {/* Show More Button */}
         <div className="mt-8 text-center">
-          <Link to="/forecast-dashboard/model-products">
+          <Link to="/forecast-dashboard/special-products">
             {' '}
             {/* Update the path to your Special Products page */}
             <button className="rounded-lg bg-blue-700 px-6 py-2 capitalize text-white hover:bg-blue-600">
