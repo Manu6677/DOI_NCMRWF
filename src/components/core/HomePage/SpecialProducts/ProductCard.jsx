@@ -21,7 +21,7 @@ const ProductCard = ({ title, desc, img, link }) => {
       {/* Learn More Button */}
       <div className="absolute -bottom-12 transition-all duration-300 group-hover:bottom-4">
         <Link
-          to={'/forecast-dashboard/model-products'} // Add the appropriate path here
+          to={'/forecast-dashboard/special-products'} // Add the appropriate path here
           className="inline-block rounded bg-blue-600 px-6 py-2 text-lg font-semibold text-white transition duration-300 hover:bg-blue-700"
         >
           Learn more

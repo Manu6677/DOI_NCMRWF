@@ -4,6 +4,10 @@ import { headings, links } from '../../../data/footer-data';
 import { useSelector } from 'react-redux';
 import SocialMediaLinks from '../SocialMediaLinks';
 import ncmrwfLogo from '../../../assets/images/NCMRWF_Logo_Hindi-English.png';
+import {
+  logVisitor,
+  fetchVisitorCount,
+} from '../../../services/operations/visitorApi';
 
 const Footer = () => {
   const { language } = useSelector((state) => state.language);
@@ -13,18 +17,14 @@ const Footer = () => {
   const currentDate = new Date();
 
   useEffect(() => {
-    // Fetch visitor count from API
-    const fetchVisitorCount = async () => {
-      try {
-        const response = await fetch('/api/visitor-count'); // Replace with your actual API endpoint
-        const data = await response.json();
-        setVisitorCount(data.count);
-      } catch (error) {
-        console.error('Error fetching visitor count:', error);
-      }
+    logVisitor(); // Log visit on load
+
+    const getCount = async () => {
+      const count = await fetchVisitorCount();
+      setVisitorCount(count);
     };
 
-    fetchVisitorCount();
+    getCount();
   }, []);
 
   return (
