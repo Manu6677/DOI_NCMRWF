@@ -1,5 +1,10 @@
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+export const visitorsEndpoints = {
+  LOG_VISIT: `${BASE_URL}/visitors/visit`,
+  GET_VISITOR_COUNT: `${BASE_URL}/visitors/count`,
+};
+
 export const officeOrdersEndpoints = {
   GET_ALL_YEARS: BASE_URL + `/officeOrders/years`,
   GET_ORDERS_BY_YEAR_PARAM: BASE_URL + `/officeOrders/by-year/:year`,
