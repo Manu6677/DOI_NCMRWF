@@ -16,6 +16,7 @@ const RenderItem = ({
     <MenuItem
       key={item.id}
       style={{ backgroundColor: '#003244', color: '#e0f2ff' }}
+      className="group relative"
     >
       <label className="flex cursor-pointer items-center space-x-4">
         <input
@@ -31,6 +32,10 @@ const RenderItem = ({
           {item.product_name.replace(/-/g, ' ')}
         </span>
       </label>
+      {/* Custom Tooltip (styled like TooltipButton's tooltip) */}
+      <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+        {item.product_name.replace(/-/g, ' ')} {/* Tooltip content */}
+      </div>
     </MenuItem>
   );
 };

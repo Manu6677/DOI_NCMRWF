@@ -1,5 +1,11 @@
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+export const officeOrdersEndpoints = {
+  GET_ALL_YEARS: BASE_URL + `/officeOrders/years`,
+  GET_ORDERS_BY_YEAR_PARAM: BASE_URL + `/officeOrders/by-year/:year`,
+  GET_ALL_ORDERS: BASE_URL + `/officeOrders/`,
+};
+
 export const sliderImagesEndpoints = {
   GET_ALL_IMAGES_BY_CATEGORY: BASE_URL + `/images/fetchImageByType`,
   CREATE_IMAGES_BY_CATEGORY: BASE_URL + `/images/createImage`,

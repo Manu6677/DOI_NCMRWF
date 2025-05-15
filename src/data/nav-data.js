@@ -67,7 +67,7 @@ export const navData = [
       en: 'Products',
       hi: 'पूर्वानुमान',
     },
-    path: '/forecast-dashboard/',
+    path: '/forecast-dashboard/model-products',
     // path: '/forecast-products/',
     dropdown: false,
     dropdownContainerClass: '-left-[18rem] w-[45rem] top-12',

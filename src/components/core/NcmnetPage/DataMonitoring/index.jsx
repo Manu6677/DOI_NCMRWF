@@ -1,8 +1,8 @@
 // src/components/DataMonitoring.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchMonitoringData } from '../../../../services/operations/fetchMonitoringData';
 
-// Get baseUrl from environment variable, default to empty string if not set
 const baseUrl = process.env.REACT_APP_ASSETS_BASE_URL_NEW || '';
 
 const DataMonitoring = () => {
@@ -18,74 +18,33 @@ const DataMonitoring = () => {
   const earlyUrl = `${baseUrl}/early_temp.txt`;
   const updateUrl = `${baseUrl}/update_temp.txt`;
 
+  const getCycleLink = (type, cycle, highlightedCycle) => {
+    const basePath = `/ncmnet/data-monitoring/${type}/${cycle}`;
+    return `${basePath}?highlight=${highlightedCycle}`;
+  };
+
   useEffect(() => {
-    // Check if baseUrl is configured before attempting to fetch
     if (!baseUrl) {
-      setError(
-        'Base URL (REACT_APP_ASSETS_BASE_URL_NEW) is not configured in environment variables.'
-      );
+      setError('Base URL (REACT_APP_ASSETS_BASE_URL_NEW) is not configured.');
       setLoading(false);
-      return; // Stop the effect if no baseUrl
+      return;
     }
 
-    const fetchData = async () => {
+    const loadData = async () => {
       setLoading(true);
-      setError(null);
-      try {
-        // Fetch both files concurrently
-        const [earlyResponse, updateResponse] = await Promise.all([
-          fetch(earlyUrl),
-          fetch(updateUrl),
-        ]);
+      const result = await fetchMonitoringData(earlyUrl, updateUrl);
 
-        // Check if responses are ok
-        if (!earlyResponse.ok) {
-          throw new Error(
-            `Failed to fetch ${earlyUrl}: ${earlyResponse.statusText} (Status: ${earlyResponse.status})`
-          );
-        }
-        if (!updateResponse.ok) {
-          throw new Error(
-            `Failed to fetch ${updateUrl}: ${updateResponse.statusText} (Status: ${updateResponse.status})`
-          );
-        }
-
-        // Get text content
-        const earlyText = (await earlyResponse.text()).trim();
-        const updateText = (await updateResponse.text()).trim();
-
-        // Update state based on fetched text ('00', '06', '12', '18')
-        const validCycles = ['00', '06', '12', '18'];
-
-        if (validCycles.includes(earlyText)) {
-          setEarlyHighlight(earlyText);
-        } else {
-          console.warn(
-            `Unexpected content in early.txt: "${earlyText}". Expected one of ${validCycles.join(', ')}.`
-          );
-          setEarlyHighlight(null); // Reset or handle as needed
-        }
-
-        if (validCycles.includes(updateText)) {
-          setUpdateHighlight(updateText);
-        } else {
-          console.warn(
-            `Unexpected content in update.txt: "${updateText}". Expected one of ${validCycles.join(', ')}.`
-          );
-          setUpdateHighlight(null); // Reset or handle as needed
-        }
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        // Provide more specific error if fetch failed vs text processing issue
-        setError(err.message || 'An error occurred while fetching data.');
-      } finally {
-        setLoading(false);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setEarlyHighlight(result.earlyHighlight);
+        setUpdateHighlight(result.updateHighlight);
       }
+
+      setLoading(false);
     };
 
-    fetchData(); // Call fetch data since baseUrl check passed
-
-    // Dependency array includes URLs to refetch if they change (though primarily driven by baseUrl)
+    loadData();
   }, [baseUrl, earlyUrl, updateUrl]);
 
   // *** CORRECTED Helper function for button classes ***
@@ -127,25 +86,25 @@ const DataMonitoring = () => {
         <div className="grid grid-cols-4 gap-4">
           {/* Add the 'to' prop to each Link */}
           <Link
-            to={`/ncmnet/data-monitoring/early/00z`} // <-- Specify the destination route
+            to={getCycleLink('early', '00z', earlyHighlight)}
             className={getButtonClass('00z', earlyHighlight)}
           >
             00z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/early/06z`} // <-- Specify the destination route
+            to={getCycleLink('early', '06z', earlyHighlight)}
             className={getButtonClass('06z', earlyHighlight)}
           >
             06z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/early/12z`} // <-- Specify the destination route
+            to={getCycleLink('early', '12z', earlyHighlight)}
             className={getButtonClass('12z', earlyHighlight)}
           >
             12z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/early/18z`} // <-- Specify the destination route
+            to={getCycleLink('early', '18z', earlyHighlight)}
             className={getButtonClass('18z', earlyHighlight)}
           >
             18z
@@ -162,25 +121,25 @@ const DataMonitoring = () => {
         <div className="grid grid-cols-4 gap-4">
           {/* Add the 'to' prop to each Link */}
           <Link
-            to={`/ncmnet/data-monitoring/update/00z`} // <-- Specify the destination route
+            to={getCycleLink('update', '00z', updateHighlight)}
             className={getButtonClass('00z', updateHighlight)}
           >
             00z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/update/06z`} // <-- Specify the destination route
+            to={getCycleLink('update', '06z', updateHighlight)}
             className={getButtonClass('06z', updateHighlight)}
           >
             06z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/update/12z`} // <-- Specify the destination route
+            to={getCycleLink('update', '12z', updateHighlight)}
             className={getButtonClass('12z', updateHighlight)}
           >
             12z
           </Link>
           <Link
-            to={`/ncmnet/data-monitoring/update/18z`} // <-- Specify the destination route
+            to={getCycleLink('update', '18z', updateHighlight)}
             className={getButtonClass('18z', updateHighlight)}
           >
             18z

@@ -10,17 +10,6 @@ const HeroSection = () => {
   const locale = language?.locale;
 
   const slides = [
-    // {
-    //   time: 0, // seconds
-    //   heading: {
-    //     en: 'Research and Development',
-    //     hi: 'अनुसंधान और विकास',
-    //   },
-    //   text: {
-    //     en: 'NCMRWF is conducting research and development to maintain and improve its technical expertise, knowledge, and skills',
-    //     hi: 'रा.म.अ.मौ.पू.कें अनुसंधान और विकास कर रहा है ताकि अपनी तकनीकी विशेषज्ञता, ज्ञान और कौशल को बनाए रखा जा सके और उन्हें सुधारा जा सके',
-    //   },
-    // },
     {
       time: 0,
       heading: {

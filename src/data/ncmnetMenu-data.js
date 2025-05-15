@@ -20,6 +20,9 @@ import {
   FiBarChart,
   FiCalendar,
   FiRefreshCcw,
+  FiZap,
+  FiCheckCircle,
+  FiClock,
 } from 'react-icons/fi'; // Example icons
 
 export const ncmnetMenuItems = [
@@ -324,22 +327,35 @@ export const ncmnetMenuItems = [
     icon: FiBriefcase,
     path: '/ncmnet/rtm-portal',
   },
-  // {
-  //   id: 'datamon',
-  //   label: 'Data-Monitoring',
-  //   icon: FiEye,
-  //   path: '/ncmnet/data-monitoring',
-  // },
-  // {
-  //   id: 'gmltp',
-  //   label: 'Global Model Lightning Threat Product',
-  //   icon: FiCloudLightning,
-  //   path: '/ncmnet/global-model-lightning-threat-product',
-  // },
-  // {
-  //   id: 'orders',
-  //   label: 'Office Orders',
-  //   icon: FiFileText,
-  //   path: '/ncmnet/office-orders',
-  // },
+  {
+    id: 'datamon',
+    label: 'Data-Monitoring',
+    icon: FiEye,
+    path: '/ncmnet/data-monitoring',
+  },
+  {
+    id: 'gmltp',
+    label: 'Global Model Lightning Threat Product',
+    icon: FiZap,
+    children: [
+      {
+        id: 'forecast',
+        label: 'Forecast',
+        icon: FiClock,
+        path: '/ncmnet/global-model-lightning-threat-product/forecast',
+      },
+      {
+        id: 'verification',
+        label: 'Verification',
+        icon: FiCheckCircle,
+        path: '/ncmnet/global-model-lightning-threat-product/verification',
+      },
+    ],
+  },
+  {
+    id: 'orders',
+    label: 'Office Orders',
+    icon: FiFileText,
+    path: '/ncmnet/office-orders',
+  },
 ];

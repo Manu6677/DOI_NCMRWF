@@ -211,22 +211,28 @@ const ModelProducts = () => {
     });
 
   return (
-    <div className="flex max-h-screen flex-col bg-slate-100">
-      {/* Main content and sidebar */}
-      <div className="flex flex-1 flex-row-reverse overflow-hidden p-4 sm:p-6">
-        {/* Sidebar Controls */}
-        <div className="my-4 ml-4 flex h-full w-full max-w-xs flex-shrink-0 flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-lg sm:max-w-sm md:max-w-md">
-          {/* UTC Change */}
+    // Use flex column for overall page structure to better manage footer/pagination
+    <div className="flex h-screen flex-col">
+      <div className="flex-grow overflow-auto p-4 sm:p-6">
+        {' '}
+        {/* Added flex-grow to allow this section to take available space */}
+        {/* Breadcrumbs */}
+        {/* Pass items to Breadcrumbs, assuming it can take an array of breadcrumb objects */}
+        <Breadcrumbs items={breadcrumbItems} />
+        {/* Controls Section: Added margin-bottom and flex-wrap for responsiveness */}
+        <div className="my-4 flex flex-wrap items-center gap-4 rounded-md bg-slate-50 p-2 shadow">
+          {' '}
+          {/* Added padding, bg, rounded, shadow for better visual grouping */}
+          {/* UTC Change Component */}
           <div className="flex items-center">
             <ChangeUTC
               selectedUTC={selectedUTC}
               setSelectedUTC={setSelectedUTC}
             />
           </div>
-
-          {/* Forecast Hours */}
+          {/* Forecast Hours Selection */}
           {forecastHours.length > 0 && (
-            <div className="mt-6">
+            <div className="flex items-center">
               <ForecastHours
                 selectedHour={selectedForecastHour}
                 onSelect={setSelectedForecastHour}
@@ -234,13 +240,12 @@ const ModelProducts = () => {
               />
             </div>
           )}
-
-          {/* City Dropdown */}
+          {/* ---- City Dropdown ---- */}
           {cityNames && cityNames.length > 0 && (
-            <div className="mt-6">
+            <div className="flex items-center">
               <label
                 htmlFor="city-select"
-                className="mb-2 block text-sm font-semibold text-slate-700"
+                className="mr-2 text-sm font-medium text-slate-700" // Slightly smaller label
               >
                 City:
               </label>
@@ -250,104 +255,116 @@ const ModelProducts = () => {
                 options={cityNames[0]
                   ?.slice()
                   .sort((a, b) => a.localeCompare(b))
-                  .map((city) => ({ value: city, label: city }))}
+                  .map((city) => ({
+                    value: city,
+                    label: city,
+                  }))}
                 value={{ label: selectedCity, value: selectedCity }}
                 onChange={(option) => setSelectedCity(option.value)}
-                className="w-full text-sm"
+                className="min-w-[180px] text-sm" // Slightly smaller min-width and text
                 placeholder="Select city..."
                 isSearchable
+                // styles prop can be used for deeper customization of react-select if needed
               />
             </div>
           )}
-
-          {/* Pagination */}
-          {!loading && totalPages > 1 && (
-            <div className="mt-6 border-t border-slate-200 pt-4">
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={(newPage) => dispatch(setPage(newPage))}
-                showHpa={true}
-                showTimeLine={true}
-              />
-            </div>
-          )}
-
-          {/* Footer */}
-          <div className="mt-auto pt-6 text-center">
-            <hr className="border-slate-300" />
-            {/* Optional footer text */}
-            {/* <p className="mt-2 text-xs text-slate-400">Filter Options</p> */}
-          </div>
         </div>
-
-        {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto pr-1">
-          {/* Loading Spinner */}
-          {loading && (
-            <div className="flex h-full items-center justify-center py-10">
-              <Spinner size="12" />
-            </div>
-          )}
-
-          {/* No Products */}
-          {!loading && products.length === 0 && metaData.length === 0 && (
-            <div className="flex h-full items-center justify-center py-10">
-              <p className="text-center text-lg text-slate-500">
-                No forecast products available.
-              </p>
-            </div>
-          )}
-
-          {/* Products Grid */}
-          {!loading && products.length > 0 && (
+        {/* Loading State: Centered Spinner */}
+        {loading && (
+          <div className="flex h-64 items-center justify-center">
+            {' '}
+            {/* Container for centering spinner */}
+            <Spinner size="12" /> {/* Increased size for better visibility */}
+          </div>
+        )}
+        {/* No Products Available Message: Added margin-top for better spacing */}
+        {!loading && products.length === 0 && metaData.length === 0 && (
+          <p className="py-10 text-center text-lg text-slate-500">
+            {' '}
+            {/* Adjusted text color and padding */}
+            No forecast products available.
+          </p>
+        )}
+        {/* Product Display Grid: Key area for image sizing is within ProductCard component */}
+        {/* The `ProductCard` itself should handle how the image is displayed (e.g., aspect ratio, object-fit) */}
+        {!loading && products.length > 0 && (
+          <div
+            className={`grid gap-6 ${
+              // If single product, center it and give it more space.
+              // ProductCard internal styling for image is crucial.
+              products.length === 1
+                ? 'grid-cols-1 place-items-center' // Center the single card in the grid cell
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' // More responsive grid
+            }`}
+          >
+            {products.map((imageUrl, index) => (
+              <ProductCard
+                key={index}
+                imageUrl={imageUrl}
+                onClick={() => setPreviewProduct(imageUrl)}
+                // For a single product, allow it to be wider.
+                // The ProductCard should manage its internal image display to prevent excessive height.
+                // Example: max-w-full for grid items, or a specific max-w for single item.
+                Class={
+                  products.length === 1
+                    ? 'w-full max-w-2xl' // Larger max-width for a single centered image/card
+                    : 'w-full' // Full width within its grid cell
+                }
+                // Suggestion: ProductCard could have an 'aspectRatio' prop or similar
+                // e.g., aspectRatio="16/9" to enforce consistent image dimensions.
+              />
+            ))}
+          </div>
+        )}
+        {/* MetaData Display Grid: Similar styling to products grid */}
+        {!loading &&
+          metaData.length > 0 && ( // Assuming metaData is an array of objects
             <div
-              className={`grid gap-5 p-4 sm:gap-6 ${
-                products.length === 1
+              className={`mt-6 grid gap-6 ${
+                // Added mt-6 if products are also displayed, otherwise it's fine
+                metaData.length === 1 // If only one metadata item
                   ? 'grid-cols-1 place-items-center'
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                  : 'grid-cols-1 md:grid-cols-2' // Adjust as needed for metadata card content
               }`}
             >
-              {products.map((imageUrl, index) => (
-                <ProductCard
-                  key={index}
-                  imageUrl={imageUrl}
-                  onClick={() => setPreviewProduct(imageUrl)}
-                  Class={`${
-                    products.length === 1 ? 'w-full max-w-lg' : 'w-full'
-                  } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-white border`}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* MetaData Section */}
-          {!loading && metaData.length > 0 && (
-            <div
-              className={`mt-6 flex flex-col gap-4 p-4 sm:gap-6 ${
-                metaData.length === 1 ? 'items-center' : ''
-              }`}
-            >
+              {/* Ensure metaData is an array before mapping */}
               {(Array.isArray(metaData) ? metaData : [metaData]).map(
                 (item, index) => (
-                  <ProductCard
+                  <ProductCard // Reusing ProductCard for metadata; ensure it can handle text content well
                     key={index}
-                    imageUrl={item?.link || item?.metadata?.link || ''}
+                    imageUrl={item?.link || item?.metadata?.link || ''} // Provide a fallback image if necessary or style differently if no image
                     title={item?.title}
                     description={item?.description}
-                    onClick={() => setPreviewProduct(item.link)}
-                    Class={`${
-                      metaData.length === 1 ? 'w-full max-w-lg' : 'w-full'
-                    } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-white border`}
+                    onClick={() => setPreviewProduct(item.link)} // Ensure item.link is valid for preview
+                    Class={
+                      metaData.length === 1
+                        ? 'w-full max-w-lg' // Max width for a single metadata card
+                        : 'w-full'
+                    }
                   />
                 )
               )}
             </div>
           )}
+        {/* Pagination Controls: Added margin-top for spacing */}
+      </div>{' '}
+      {/* End of scrollable content area */}
+      {/* Pagination container at the bottom */}
+      {!loading && totalPages > 1 && (
+        <div className="border-t border-slate-200 bg-slate-50 p-4">
+          {' '}
+          {/* Added some styling to pagination container */}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={(newPage) => dispatch(setPage(newPage))}
+            showHpa={true}
+          />
         </div>
-      </div>
-
+      )}
       {/* Image Preview Modal */}
+      {/* The ProductImageModal should internally handle image sizing to fit the viewport */}
+      {/* e.g., max-width: 90vw, max-height: 90vh, object-fit: contain for the image */}
       {previewProduct && (
         <ProductImageModal
           imageUrl={previewProduct}

@@ -9,8 +9,6 @@ export const fetchBimstecProductsNames = async () => {
   try {
     const response = await apiConnector('GET', GET_ALL_BIMSTEC_PRODUCTS);
 
-    // console.log('response  ->', GET_ALL_BIMSTEC_PRODUCTS);
-
     // Ensure response.data is a valid array before proceeding
     if (!Array.isArray(response.data) || response.data.length === 0) {
       throw new Error('Could Not Fetch Special Forecast Products');

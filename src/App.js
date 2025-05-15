@@ -123,8 +123,20 @@ const NcmrwfAnalysisVerification = lazy(
 const GfsBiasCorrectedTemperatures = lazy(
   () => import('./components/core/NcmnetPage/GfsBiasCorrectedTemperatures')
 );
-const ForecastVerification = lazy(
-  () => import('./components/core/NcmnetPage/ForecastVerification')
+const LightningThreatForecastPage = lazy(
+  () =>
+    import(
+      './components/core/NcmnetPage/GlobalModelThreat/LightningThreatForecastPage'
+    )
+);
+const LightningThreatVerifications = lazy(
+  () =>
+    import(
+      './components/core/NcmnetPage/GlobalModelThreat/LightiningThreatVerifications'
+    )
+);
+const OfficeOrdersPage = lazy(
+  () => import('./components/core/NcmnetPage/OfficeOrdersPage')
 );
 
 // Footer Links / Misc Pages
@@ -232,7 +244,10 @@ function App() {
           <Route element={<ForecastDashboard />}>
             {' '}
             {/* Keep this if ForecastDashboard provides its own sub-layout/context */}
-            <Route path="forecast-dashboard/*" element={<ModelProducts />} />
+            <Route
+              path="forecast-dashboard/model-products"
+              element={<ModelProducts />}
+            />
             <Route
               path="forecast-dashboard/special-products"
               element={<SpecialModelProdcuts />}
@@ -309,6 +324,18 @@ function App() {
             <Route
               path="/ncmnet/data-monitoring/:dataType/:cycleTime"
               element={<DataDetailsPage />}
+            />
+            <Route
+              path="/ncmnet/global-model-lightning-threat-product/forecast"
+              element={<LightningThreatForecastPage />}
+            />
+            <Route
+              path="/ncmnet/global-model-lightning-threat-product/verification"
+              element={<LightningThreatVerifications />}
+            />
+            <Route
+              path="/ncmnet/office-orders"
+              element={<OfficeOrdersPage />}
             />
           </Route>
         </Route>

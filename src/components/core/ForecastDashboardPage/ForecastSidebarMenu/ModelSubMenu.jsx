@@ -49,7 +49,8 @@ const ModelSubMenu = () => {
             modelsData.models[0]; // Fallback to the first model
 
           if (defaultModel) {
-            dispatch(setSelectedModel(defaultModel));
+            console.log('defaultModel selectedModel -> ', selectedModel);
+            // dispatch(setSelectedModel(defaultModel));
           }
         }
       } catch (error) {
@@ -108,10 +109,10 @@ const ModelSubMenu = () => {
       // Navigate only after selecting a new model if needed,
       // or perhaps navigation isn't needed here if the dashboard updates based on Redux state.
       // If navigation is required on *every* click, keep it here. If only on *change*, keep it inside the if block.
-      // navigate('/forecast-dashboard/');
+      navigate('/forecast-dashboard/model-products');
     }
     // If navigation should happen even if clicking the same model, keep it outside the 'if'
-    navigate('/forecast-dashboard/');
+    navigate('/forecast-dashboard/model-products');
   };
 
   return (
@@ -151,7 +152,7 @@ const ModelSubMenu = () => {
               color: '#e0f2ff', // Default text color
             }}
             // Added hover effect class (assuming you have Tailwind or CSS for this)
-            className="hover:bg-blue-800" // Example hover effect using Tailwind
+            className="group relative hover:bg-blue-800" // Example hover effect using Tailwind
             // Add the title attribute for the tooltip
             // It will show model_name if available, otherwise alias
             title={model.model_name || model.alias}
@@ -175,6 +176,10 @@ const ModelSubMenu = () => {
                 {model.alias}
               </span>
             </label>
+            {/* Custom Tooltip (styled like TooltipButton's tooltip) */}
+            <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 min-w-max max-w-xs -translate-x-1/2 scale-0 rounded-md bg-orange-900 px-3 py-2 text-xs capitalize text-white opacity-0 shadow-md transition-all duration-200 ease-in-out group-hover:scale-100 group-hover:opacity-100">
+              {model.alias} {/* Tooltip content */}
+            </div>
           </MenuItem>
         ))}
     </SubMenu>

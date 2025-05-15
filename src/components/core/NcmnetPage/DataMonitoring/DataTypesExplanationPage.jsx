@@ -545,6 +545,8 @@ export const dataTypesInfo = [
   },
 ];
 
+const baseUrl = process.env.REACT_APP_ASSETS_BASE_URL_NEW || '';
+
 const DataTypesExplanationPage = () => {
   return (
     <div className="from-sky-100 min-h-screen bg-gradient-to-br via-white to-orange-100 p-4 pt-6 sm:p-6 lg:p-10">
