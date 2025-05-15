@@ -226,8 +226,9 @@ const SpecialModelProducts = () => {
         {/* No Products Available Message */}
         {!loading &&
           products.length === 0 && ( // Removed metaData.length check as it's not used here
-            <p className="py-10 text-center text-lg text-slate-500">
-              No products found. Please check the selection or try again later.
+            <p className="text-gray-600 mt-6 text-center text-base font-medium italic tracking-wide">
+              Please select an option from the left sidebar to view special
+              products.
             </p>
           )}
 
