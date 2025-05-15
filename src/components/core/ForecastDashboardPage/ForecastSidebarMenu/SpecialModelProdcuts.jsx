@@ -239,8 +239,8 @@ const SpecialModelProducts = () => {
 
       {/* No Products Available */}
       {!loading && products.length === 0 && metaData.length === 0 && (
-        <p className="text-center text-lg text-slate-600">
-          No products found. Please try again later.
+        <p className="text-gray-600 mt-6 text-center text-base font-medium italic tracking-wide">
+          Please select an option from the left sidebar to special products.
         </p>
       )}
 

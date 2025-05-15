@@ -22,35 +22,6 @@ const ImpactOverview = () => {
   };
 
   return (
-    // <section className="bg-blue-700 bg-gradient-to-r py-4">
-    //   <div className="mx-auto mt-4">
-    //     {/* Header */}
-    //     <div className="mb-4 text-center">
-    //       <h2 className="mb-4 text-3xl font-bold text-white md:text-5xl">
-    //         {translations[locale]?.heading || translations.en.heading}
-    //       </h2>
-    //       <p className="text-lg text-white md:text-xl">
-    //         {translations[locale]?.description || translations.en.description}
-    //       </p>
-    //     </div>
-
-    //     {/* Featured Sections: Latest News & Upcoming Events */}
-    //     <div className="mx-auto flex flex-wrap items-center justify-center gap-4">
-    //       <div className="col-span-1 w-6/12">
-    //         <OrganizationInfo />
-    //       </div>
-    //       <div className="col-span-1 w-5/12">
-    //         <h2 className="mb-4 text-2xl font-bold text-white">
-    //           {locale === 'en'
-    //             ? 'GIS-Based Weather Mapping and Analysis'
-    //             : 'जीआईएस आधारित मौसम मानचित्रण और विश्लेषण'}
-    //         </h2>
-    //         <MapComponent />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </section>
-
     <section className="bg-blue-700 bg-gradient-to-r py-4">
       <div className="mx-auto mt-2 px-4">
         {/* Header */}
@@ -69,12 +40,25 @@ const ImpactOverview = () => {
             <OrganizationInfo />
           </div>
 
-          <div className="w-full md:w-5/12">
+          {/* <div className="w-full md:w-5/12">
             <h2 className="mb-4 text-2xl font-bold text-white">
               {locale === 'en'
                 ? 'GIS-Based Weather Mapping and Analysis'
                 : 'जीआईएस आधारित मौसम मानचित्रण और विश्लेषण'}
             </h2>
+            <MapComponent />
+          </div> */}
+          <div className="w-full md:w-5/12">
+            <a
+              href="https://nwp.ncmrwf.gov.in/dashboard/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-4 inline-block text-3xl font-semibold tracking-wide text-orange-400 transition-all duration-300 hover:text-orange-200"
+            >
+              {locale === 'en'
+                ? 'GIS-Based Weather Mapping and Analysis'
+                : 'जीआईएस आधारित मौसम मानचित्रण और विश्लेषण'}
+            </a>
             <MapComponent />
           </div>
         </div>
