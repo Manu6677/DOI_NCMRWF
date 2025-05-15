@@ -326,11 +326,11 @@ function App() {
               element={<DataDetailsPage />}
             />
             <Route
-              path="/ncmnet/gfs-bias-corrected-temperatures/forecast"
+              path="/ncmnet/global-model-lightning-threat-product/forecast"
               element={<LightningThreatForecastPage />}
             />
             <Route
-              path="/ncmnet/gfs-bias-corrected-temperatures/verification"
+              path="/ncmnet/global-model-lightning-threat-product/verification"
               element={<LightningThreatVerifications />}
             />
             <Route

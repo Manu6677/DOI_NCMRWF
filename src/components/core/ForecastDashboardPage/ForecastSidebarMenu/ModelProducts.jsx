@@ -211,34 +211,22 @@ const ModelProducts = () => {
     });
 
   return (
-    <div className="flex max-h-screen flex-col">
-      {' '}
-      {/* Outermost container, fixed to screen height */}
-      {/* Main content area + controls container.
-          - flex-1: Takes available vertical space after pagination.
-          - flex-row-reverse: Positions controls (first child) to the right.
-          - overflow-hidden: Explicitly prevent scrolling on this container. Content must fit.
-      */}
+    <div className="flex max-h-screen flex-col bg-slate-100">
+      {/* Main content and sidebar */}
       <div className="flex flex-1 flex-row-reverse overflow-hidden p-4 sm:p-6">
-        {/* Controls Section: Positioned to the right.
-            - Its height is determined by its content.
-            - flex-shrink-0: Prevents this column from shrinking horizontally.
-        */}
-        <div className="my-4 ml-4 flex h-full w-full max-w-xs flex-shrink-0 flex-col rounded-md bg-slate-50 p-6 shadow sm:max-w-sm md:max-w-md">
-          {' '}
-          {/* Added h-full, p-6; removed gap */}
-          {/* UTC Change Component */}
+        {/* Sidebar Controls */}
+        <div className="my-4 ml-4 flex h-full w-full max-w-xs flex-shrink-0 flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-lg sm:max-w-sm md:max-w-md">
+          {/* UTC Change */}
           <div className="flex items-center">
             <ChangeUTC
               selectedUTC={selectedUTC}
               setSelectedUTC={setSelectedUTC}
             />
           </div>
-          {/* Forecast Hours Selection */}
+
+          {/* Forecast Hours */}
           {forecastHours.length > 0 && (
-            <div className="mt-6 flex items-center">
-              {' '}
-              {/* Added mt-6 for spacing */}
+            <div className="mt-6">
               <ForecastHours
                 selectedHour={selectedForecastHour}
                 onSelect={setSelectedForecastHour}
@@ -246,85 +234,78 @@ const ModelProducts = () => {
               />
             </div>
           )}
-          {/* ---- City Dropdown ---- */}
+
+          {/* City Dropdown */}
           {cityNames && cityNames.length > 0 && (
-            <div className="mt-6 flex flex-col items-start">
-              {' '}
-              {/* Added mt-6 for spacing */}
+            <div className="mt-6">
               <label
                 htmlFor="city-select"
-                className="mb-1 text-sm font-medium text-slate-700"
+                className="mb-2 block text-sm font-semibold text-slate-700"
               >
                 City:
               </label>
               <Select
                 id="city-select"
-                isDisabled={loading} // Assuming 'loading' is a prop or state available here
+                isDisabled={loading}
                 options={cityNames[0]
                   ?.slice()
                   .sort((a, b) => a.localeCompare(b))
-                  .map((city) => ({
-                    value: city,
-                    label: city,
-                  }))}
-                value={{ label: selectedCity, value: selectedCity }} // Assuming 'selectedCity' is a prop/state
-                onChange={(option) => setSelectedCity(option.value)} // Assuming 'setSelectedCity' is a prop/function
-                className="w-full min-w-[180px] text-sm"
+                  .map((city) => ({ value: city, label: city }))}
+                value={{ label: selectedCity, value: selectedCity }}
+                onChange={(option) => setSelectedCity(option.value)}
+                className="w-full text-sm"
                 placeholder="Select city..."
                 isSearchable
               />
             </div>
           )}
-          {/* Spacer / Footer element pushed to the bottom */}
-          {/* This div uses mt-auto to consume remaining vertical space, pushing itself to the bottom.
-              It provides a visual anchor and makes the layout feel more complete.
-          */}
+
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="mt-6 border-t border-slate-200 pt-4">
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={(newPage) => dispatch(setPage(newPage))}
+                showHpa={true}
+                showTimeLine={true}
+              />
+            </div>
+          )}
+
+          {/* Footer */}
           <div className="mt-auto pt-6 text-center">
-            {' '}
-            {/* mt-auto is key here, pt-6 for spacing above the line */}
             <hr className="border-slate-300" />
-            {/* Optionally, you could add very subtle text below the line if desired:
-                <p className="mt-2 text-xs text-slate-400">Filter Options</p>
-            */}
+            {/* Optional footer text */}
+            {/* <p className="mt-2 text-xs text-slate-400">Filter Options</p> */}
           </div>
         </div>
-        {/* Main Content Area Wrapper (Products, Metadata, Messages)
-            - flex-1: Takes available horizontal space to the left of controls.
-            - overflow-hidden: Explicitly prevent scrolling. Content (grids/lists) must fit.
-                             Its height is constrained by the parent flex row.
-        */}
-        <div className="flex-1 overflow-scroll">
-          {/* Loading State */}
+
+        {/* Main Content Area */}
+        <div className="flex-1 overflow-y-auto pr-1">
+          {/* Loading Spinner */}
           {loading && (
             <div className="flex h-full items-center justify-center py-10">
-              {' '}
-              {/* h-full to fill available vertical space */}
               <Spinner size="12" />
             </div>
           )}
 
-          {/* No Products Available Message */}
+          {/* No Products */}
           {!loading && products.length === 0 && metaData.length === 0 && (
             <div className="flex h-full items-center justify-center py-10">
-              {' '}
-              {/* h-full for centering */}
               <p className="text-center text-lg text-slate-500">
                 No forecast products available.
               </p>
             </div>
           )}
 
-          {/* Product Display Grid
-              The total height of this grid (number of rows * card height + gaps)
-              is CRITICAL and must be small enough to fit without causing overflow.
-              Adjust items per page and ProductCard's internal image height (e.g., h-32, h-24) accordingly.
-          */}
+          {/* Products Grid */}
           {!loading && products.length > 0 && (
             <div
-              className={`grid gap-4 p-4 sm:gap-6 ${
+              className={`grid gap-5 p-4 sm:gap-6 ${
                 products.length === 1
-                  ? 'grid-cols-1 place-items-center' // Single item centered
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' // Multiple items in a grid
+                  ? 'grid-cols-1 place-items-center'
+                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
               }`}
             >
               {products.map((imageUrl, index) => (
@@ -332,28 +313,19 @@ const ModelProducts = () => {
                   key={index}
                   imageUrl={imageUrl}
                   onClick={() => setPreviewProduct(imageUrl)}
-                  Class={
-                    // Style for the card container
-                    products.length === 1
-                      ? 'w-full max-w-lg rounded-lg shadow-md overflow-hidden' // Single card
-                      : 'w-full rounded-lg shadow-md overflow-hidden' // Card in grid
-                  }
-                  // IMPORTANT: Inside ProductCard, use compact image heights (e.g., className="w-full h-32 object-cover")
-                  // and ensure text content is minimal or truncated.
+                  Class={`${
+                    products.length === 1 ? 'w-full max-w-lg' : 'w-full'
+                  } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-white border`}
                 />
               ))}
             </div>
           )}
 
-          {/* MetaData Display
-              This section uses `flex flex-col`, so items stack vertically.
-              This will consume vertical space rapidly. Ensure very few items are shown
-              or each card is extremely compact if "no scroll" is a strict requirement.
-          */}
+          {/* MetaData Section */}
           {!loading && metaData.length > 0 && (
             <div
               className={`mt-6 flex flex-col gap-4 p-4 sm:gap-6 ${
-                metaData.length === 1 ? 'items-center' : '' // Center if single metadata item
+                metaData.length === 1 ? 'items-center' : ''
               }`}
             >
               {(Array.isArray(metaData) ? metaData : [metaData]).map(
@@ -362,34 +334,19 @@ const ModelProducts = () => {
                     key={index}
                     imageUrl={item?.link || item?.metadata?.link || ''}
                     title={item?.title}
-                    description={item?.description} // Ensure ProductCard truncates long descriptions
+                    description={item?.description}
                     onClick={() => setPreviewProduct(item.link)}
-                    Class={
-                      metaData.length === 1
-                        ? 'w-full max-w-lg rounded-lg shadow-md overflow-hidden' // Single metadata item
-                        : 'w-full rounded-lg shadow-md overflow-hidden' // Multiple, will stack vertically
-                    }
-                    // IMPORTANT: ProductCard for metadata needs to be very compact in height.
+                    Class={`${
+                      metaData.length === 1 ? 'w-full max-w-lg' : 'w-full'
+                    } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-white border`}
                   />
                 )
               )}
             </div>
           )}
-        </div>{' '}
-        {/* End of Main Content Area Wrapper */}
-      </div>{' '}
-      {/* End of main content (fixed height, no scroll) flex container */}
-      {/* Pagination container at the bottom - its height is fixed / content-based */}
-      {!loading && totalPages > 1 && (
-        <div className="border-t border-slate-200 bg-slate-50 p-4">
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            onPageChange={(newPage) => dispatch(setPage(newPage))}
-            showHpa={true}
-          />
         </div>
-      )}
+      </div>
+
       {/* Image Preview Modal */}
       {previewProduct && (
         <ProductImageModal
