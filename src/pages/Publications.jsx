@@ -208,7 +208,7 @@ const Publications = () => {
           {activeTab === 'Publications' && ( // Year filter and content only shown for this tab
             <div>
               <h2 className="mb-4 border-b-2 border-blue-500 pb-2 text-xl font-bold text-slate-800 sm:text-2xl">
-                Journal Publications
+                Publications
               </h2>
               {/* Year Selector - Moved to be always visible when 'Publications' tab is active */}
               <div className="mb-4">
@@ -276,7 +276,7 @@ const Publications = () => {
                       )}
                       {pub.link && (
                         <a // Changed to <a> for direct link opening
-                          href={`${ASSETS_BASE_URL_NEW || ASSETS_BASE_URL}${pub.link}`} // Prioritize NEW URL
+                          href={`${ASSETS_BASE_URL_NEW || ASSETS_BASE_URL}/${pub.link}`} // Prioritize NEW URL
                           target="_blank"
                           rel="noopener noreferrer"
                           className="ml-2 inline-flex items-center space-x-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700 transition-colors duration-150 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"

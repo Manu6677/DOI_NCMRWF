@@ -339,13 +339,13 @@ export const ncmnetMenuItems = [
     icon: FiZap,
     children: [
       {
-        id: 'forecast',
+        id: 'forecast-gmltp',
         label: 'Forecast',
         icon: FiClock,
         path: '/ncmnet/global-model-lightning-threat-product/forecast',
       },
       {
-        id: 'verification',
+        id: 'verification-gmltp',
         label: 'Verification',
         icon: FiCheckCircle,
         path: '/ncmnet/global-model-lightning-threat-product/verification',

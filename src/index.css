@@ -5,6 +5,10 @@
 @import '~slick-carousel/slick/slick.css';
 @import '~slick-carousel/slick/slick-theme.css';
 
+.leaflet-control.velocity-control {
+  color: white !important;
+}
+
 .leaflet-legend {
   position: absolute;
   bottom: 20px;

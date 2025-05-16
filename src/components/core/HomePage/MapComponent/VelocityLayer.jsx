@@ -25,7 +25,7 @@ const VelocityLayer = ({ formattedDate, customDate }) => {
         return response.json();
       })
       .then((windData) => {
-        console.log('Wind data loaded', windData);
+        // console.log('Wind data loaded', windData);
 
         const velocityLayer = L.velocityLayer({
           displayValues: true,

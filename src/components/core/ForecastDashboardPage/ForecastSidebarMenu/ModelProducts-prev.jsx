@@ -85,7 +85,7 @@ const ModelProducts = () => {
         dispatch(setTotalPages(0)); // Typically metadata might not be paginated the same way
       } else {
         // toast.error('No forecast products available.'); // Removed to avoid too many toasts if it's a common scenario
-        console.log('No forecast products available.');
+        // console.log('No forecast products available.');
         setProducts([]);
         setMetaData([]);
         dispatch(setTotalPages(0));
