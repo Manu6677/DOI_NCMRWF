@@ -48,7 +48,7 @@ const MapComponent = () => {
     <MapContainer
       center={[22.0, 78.0]}
       zoom={4}
-      style={{ height: '35rem', borderRadius: '1rem' }}
+      style={{ height: '35rem', borderRadius: '1rem', color: 'white' }}
       attributionControl={false}
       zoomControl={false}
       doubleClickZoom={false}

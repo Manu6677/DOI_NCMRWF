@@ -13,10 +13,10 @@ const DataMonitoring = () => {
   const [error, setError] = useState(null);
 
   // URLs are now constructed using the baseUrl from environment variables
-  // const earlyUrl = `${baseUrl}/data-monitoring/image/early/early.txt`;
-  // const updateUrl = `${baseUrl}/data-monitoring/image/update/update.txt`;
-  const earlyUrl = `${baseUrl}/early_temp.txt`;
-  const updateUrl = `${baseUrl}/update_temp.txt`;
+  const earlyUrl = `${baseUrl}/data-monitoring/image/early/early.txt`;
+  const updateUrl = `${baseUrl}/data-monitoring/image/update/update.txt`;
+  // const earlyUrl = `${baseUrl}/early_temp.txt`;
+  // const updateUrl = `${baseUrl}/update_temp.txt`;
 
   const getCycleLink = (type, cycle, highlightedCycle) => {
     const basePath = `/ncmnet/data-monitoring/${type}/${cycle}`;

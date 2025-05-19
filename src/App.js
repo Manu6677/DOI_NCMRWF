@@ -16,6 +16,9 @@ import RtmPortal from './components/core/NcmnetPage/RtmPortal';
 
 // --- Lazy-Loaded Page/Feature Components ---
 // Structure/Core Pages
+const GfsSummaryPage = lazy(
+  () => import('./components/core/NcmnetPage/DataMonitoring/GfsSummaryPage')
+);
 const ObservationMenu = lazy(
   () => import('./components/core/ObservationReport/ObservationMenu')
 );
@@ -324,6 +327,10 @@ function App() {
             <Route
               path="/ncmnet/data-monitoring/:dataType/:cycleTime"
               element={<DataDetailsPage />}
+            />
+            <Route
+              path="/ncmnet/data-monitoring/gfs-summary/:dataType/:cycleTime"
+              element={<GfsSummaryPage />}
             />
             <Route
               path="/ncmnet/global-model-lightning-threat-product/forecast"

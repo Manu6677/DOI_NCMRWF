@@ -1,65 +1,53 @@
+import React, { useState, useEffect } from 'react'; // Added useState, useEffect
 import { useParams, Link, useLocation } from 'react-router-dom';
 
 // Ensure this matches your environment variable name
 const baseUrl = process.env.REACT_APP_ASSETS_BASE_URL_NEW || '';
 
-// --- Static Sample Data (Keep as is) ---
-const sampleBufrData = [
-  // ... (data remains the same as previous versions)
-  { type: '1bamua', hourly: 230469, monthly: 187647, departure: 23 },
-  { type: '1bhrs4', hourly: 152446, monthly: 140366, departure: 9 },
-  { type: '1bmhs', hourly: 1313347, monthly: 1062309, departure: 24 },
-  { type: 'abi', hourly: 490353, monthly: 422767, departure: 16 },
-  { type: 'adpsfc', hourly: 44844, monthly: 33600, departure: 33 },
-  { type: 'adpupa', hourly: 518, monthly: 291, departure: 78 },
-  { type: 'ahi', hourly: 53221, monthly: 44018, departure: 21 },
-  { type: 'aircar', hourly: 117804, monthly: 79397, departure: 48 },
-  { type: 'aircft', hourly: 17779, monthly: 21552, departure: -18 },
-  { type: 'airsev', hourly: 0, monthly: 42896, departure: -100 },
-  { type: 'ascatw', hourly: 755429, monthly: 529927, departure: 43 },
-  { type: 'atms', hourly: 1517092, monthly: 1351908, departure: 12 },
-  { type: 'avcspm', hourly: 0, monthly: 55674, departure: -100 },
-  { type: 'crisdb', hourly: 17782, monthly: 16230, departure: 10 },
-  { type: 'crisf4', hourly: 1426936, monthly: 1145309, departure: 25 },
-  { type: 'esamua', hourly: 44055, monthly: 24475, departure: 80 },
-  { type: 'esatms', hourly: 55587, monthly: 38348, departure: 45 },
-  { type: 'eshrs3', hourly: 63057, monthly: 36083, departure: 75 },
-  { type: 'esiasi', hourly: 17995, monthly: 6439, departure: 179 },
-  { type: 'esmhs', hourly: 295171, monthly: 162008, departure: 82 },
-  { type: 'gmi1cr', hourly: 424324, monthly: 376512, departure: 13 },
-  { type: 'gome', hourly: 0, monthly: 459, departure: -100 },
-  { type: 'gpsipw', hourly: 18118, monthly: 18044, departure: 0 },
-  { type: 'gpsro', hourly: 1594, monthly: 1404, departure: 13 },
-  { type: 'mtiasi', hourly: 33065, monthly: 41809, departure: -21 },
-  { type: 'nexrad', hourly: 0, monthly: 148595, departure: -100 },
-  { type: 'ompsn8', hourly: 2288, monthly: 1695, departure: 35 },
-  { type: 'ompst8', hourly: 1245352, monthly: 1113852, departure: 12 },
-  { type: 'osbuv8', hourly: 0, monthly: 0, departure: 0 },
-  { type: 'oscatw', hourly: 148989, monthly: 107775, departure: 38 },
-  { type: 'proflr', hourly: 3584, monthly: 2636, departure: 36 },
-  { type: 'satwnd', hourly: 2334317, monthly: 2080656, departure: 12 },
-  { type: 'sevasr', hourly: 302051, monthly: 269553, departure: 12 },
-  { type: 'sfcshp', hourly: 16037, monthly: 13325, departure: 20 },
-  { type: 'ssmisu', hourly: 854524, monthly: 714211, departure: 20 },
-  { type: 'tesac', hourly: 0, monthly: 6, departure: -100 },
-  { type: 'trkob', hourly: 520, monthly: 507, departure: 2 },
-  { type: 'vadwnd', hourly: 155, monthly: 161, departure: -4 },
-];
-// --- End Sample Data ---
-// Enhanced color function with more distinct hover states
+const parseBufrDataText = (textData) => {
+  if (!textData || typeof textData !== 'string') return [];
+  return textData
+    .trim()
+    .split('\n')
+    .map((line) => {
+      const parts = line.trim().split(/\s+/); // Split by one or more spaces
+      if (parts.length >= 4) {
+        const hourly = parseInt(parts[1], 10);
+        const monthly = parseInt(parts[2], 10);
+        const departure = parseFloat(parts[3]);
+        if (isNaN(hourly) || isNaN(monthly) || isNaN(departure)) {
+          console.warn('Skipping malformed line (invalid numbers):', line);
+          return null;
+        }
+        return {
+          type: parts[0],
+          hourly: hourly,
+          monthly: monthly,
+          departure: departure,
+        };
+      }
+      console.warn(
+        'Skipping malformed line (incorrect number of parts):',
+        line
+      );
+      return null;
+    })
+    .filter((item) => item !== null);
+};
+
 const getColorForDeparture = (departure) => {
   const dep = Number(departure);
   if (isNaN(dep))
-    return 'text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-50'; // Default/Invalid
+    return 'text-slate-500 hover:text-slate-700 bg-white hover:bg-slate-50';
   if (dep < -30)
-    return 'text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300'; // Abnormal Shortage
+    return 'text-red-700 hover:text-red-900 bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300';
   if (dep < -5)
-    return 'text-orange-700 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300'; // Shortage
+    return 'text-orange-700 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 border-orange-200 hover:border-orange-300';
   if (dep <= 5)
-    return 'text-gray-800 hover:text-black bg-white hover:bg-gray-50 border-slate-300 hover:border-slate-400'; // Normal
+    return 'text-slate-800 hover:text-black bg-white hover:bg-slate-50 border-slate-300 hover:border-slate-400';
   if (dep <= 30)
-    return 'text-green-700 hover:text-green-900 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300'; // Overage
-  return 'text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border-blue-200 hover:border-blue-300'; // Abnormal Overage (> 30)
+    return 'text-green-700 hover:text-green-900 bg-green-50 hover:bg-green-100 border-green-200 hover:border-green-300';
+  return 'text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border-blue-200 hover:border-blue-300';
 };
 
 const formatDateYYYYMMDD = (date) => {
@@ -70,27 +58,25 @@ const formatDateYYYYMMDD = (date) => {
 };
 
 const DataDetailsPage = () => {
-  const { dataType, cycleTime } = useParams(); // cycleTime e.g., "00z", "12z"
+  const { dataType, cycleTime } = useParams();
   const location = useLocation();
 
-  // --- Date Objects ---
+  const [bufrData, setBufrData] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
+  const [dataError, setDataError] = useState(null);
+
   const yesterdayDateObj = new Date();
   yesterdayDateObj.setDate(yesterdayDateObj.getDate() - 1);
-
   const todayDateObj = new Date();
 
-  // --- Parse Hours from Parameters ---
-  // Hour string from the current page's cycleTime (e.g., "00", "12")
   const hourStringFromCycleTime = cycleTime ? cycleTime.substring(0, 2) : '00';
-  // Numerical hour of the current page's cycle (e.g., 0, 12)
   const currentCycleHour = cycleTime
     ? parseInt(cycleTime.substring(0, 2), 10)
     : NaN;
 
-  // Get highlight parameter from URL (e.g., "00z", "18z")
   const queryParams = new URLSearchParams(location.search);
   const highlightParam = queryParams.get('highlight');
-  let highlightHour = NaN; // Default to NaN if not present or invalid
+  let highlightHour = NaN;
   if (highlightParam) {
     const parsedHighlightHour = parseInt(highlightParam.substring(0, 2), 10);
     if (!isNaN(parsedHighlightHour)) {
@@ -98,69 +84,87 @@ const DataDetailsPage = () => {
     }
   }
 
-  // --- Determine the Chosen Date based on the new rule ---
-  // Default to yesterday's date object
   let chosenDateObj = yesterdayDateObj;
-
-  // If highlightParam and cycleTime were validly parsed to numerical hours, compare them
   if (!isNaN(highlightHour) && !isNaN(currentCycleHour)) {
     if (highlightHour >= currentCycleHour) {
-      chosenDateObj = todayDateObj; // Use today if highlightedCycle is >= currentCycle
+      chosenDateObj = todayDateObj;
     }
   }
-  // If highlightParam is missing/invalid, or currentCycleHour is invalid, chosenDateObj remains yesterdayDateObj.
-
-  // Format the chosen date to YYYYMMDD string
   const chosenDateYYYYMMDD = formatDateYYYYMMDD(chosenDateObj);
 
-  // --- Date strings for various parts of the page, derived from chosenDateYYYYMMDD ---
-  // Date for page title subtitle
   const dateStringForTitle = chosenDateYYYYMMDD;
-
-  // DateTime string for the grid of `currentData` image links (YYYYMMDDHH)
   const dateTimeStringForCurrentDataImages = `${chosenDateYYYYMMDD}${hourStringFromCycleTime}`;
-
-  // DateTime string for PDF links (YYYYMMDDHH) - also follows the new rule
   const pdfDateTimeString = `${chosenDateYYYYMMDD}${hourStringFromCycleTime}`;
 
-  // --- Display Strings ---
   const displayDataType = dataType
     ? dataType.charAt(0).toUpperCase() + dataType.slice(1)
     : 'Unknown';
+  const lowerCaseDataType = dataType ? dataType.toLowerCase() : 'unknown'; // For data URL
   const displayCycleTime = cycleTime ? cycleTime.toUpperCase() : 'Unknown';
 
-  // --- Data ---
-  const currentData = sampleBufrData; // Using the placeholder
-  const loading = false;
-  const error = null;
+  useEffect(() => {
+    if (!baseUrl || !cycleTime || !dataType) {
+      // Added dataType check for the URL
+      setDataError(
+        'Base URL, Data Type, or Cycle Time is missing for fetching data.'
+      );
+      setLoadingData(false);
+      setBufrData([]);
+      return;
+    }
 
-  // --- URLs ---
-  // URL for the main plot image on the right. Its structure doesn't include YYYYMMDD.
+    setLoadingData(true);
+    setDataError(null);
+    setBufrData([]);
+
+    // Using lowerCaseDataType (derived from dataType param) in the URL
+    const dataUrl = `${baseUrl}/data-monitoring/image/${lowerCaseDataType}/DATA_TABLE/${hourStringFromCycleTime}/percentage.txt`;
+
+    fetch(dataUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `HTTP error! status: ${response.status} while fetching ${dataUrl}`
+          );
+        }
+        return response.text();
+      })
+      .then((text) => {
+        const parsedData = parseBufrDataText(text);
+        if (parsedData.length === 0 && text.trim() !== '') {
+          console.warn(
+            `Parsed data is empty, but fetched text was not. URL: ${dataUrl}. Raw text:`,
+            text
+          );
+        }
+        setBufrData(parsedData);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch or parse BUFR data:', error);
+        setDataError(error.message);
+      })
+      .finally(() => {
+        setLoadingData(false);
+      });
+  }, [
+    baseUrl,
+    dataType,
+    cycleTime,
+    hourStringFromCycleTime,
+    lowerCaseDataType,
+  ]); // Added dataType and lowerCaseDataType to dependencies
+
   const plotImageUrl = `${baseUrl}/data-monitoring/image/PLOT/percentage_${hourStringFromCycleTime}_${dataType}.png`;
-
-  // URLs for PDF links, now using the `pdfDateTimeString` derived from `chosenDateObj`
   const receptionStatusPdfUrl = `${baseUrl}/data-monitoring/image/update-assimlation/${pdfDateTimeString}/Reception_Status_Update.pdf`;
   const assimilationStatusPdfUrl = `${baseUrl}/data-monitoring/image/update-assimlation/${pdfDateTimeString}/Assimilation_Status_Update.pdf`;
 
-  // --- Loading / Error / Validation ---
-  if (loading)
-    return (
-      <div className="flex h-screen items-center justify-center text-xl font-semibold text-slate-700">
-        Loading details...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="m-4 rounded-lg border border-red-300 bg-red-100 p-6 text-center text-red-800 shadow-md">
-        Error loading details: {error}
-      </div>
-    );
-  if (!dataType || !cycleTime || !baseUrl)
+  if (!dataType || !cycleTime || !baseUrl) {
     return (
       <div className="m-4 rounded-lg border border-orange-300 bg-orange-100 p-6 text-center text-orange-800 shadow-md">
         Error: Missing data type, cycle time in URL, or Base URL configuration.
       </div>
     );
+  }
 
   return (
     <div className="from-sky-100 min-h-screen bg-gradient-to-br via-white to-orange-100 p-4 pt-6 sm:p-6 lg:p-10">
@@ -169,7 +173,6 @@ const DataDetailsPage = () => {
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             NGFS Dump Data Counts Time Series Plots
           </h1>
-          {/* Subtitle now uses dateStringForTitle which reflects the chosenDateYYYYMMDD */}
           <h2 className="text-indigo-700 mt-2 text-xl font-medium sm:text-2xl">
             Valid {displayCycleTime} {displayDataType} Cycle (Date:{' '}
             {dateStringForTitle})
@@ -178,24 +181,24 @@ const DataDetailsPage = () => {
 
         <nav className="mb-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm sm:text-base">
           <Link
-            to="/ncmnet/explanation-of-data-types"
+            to="/ncmnet/explanation-of-data-types" // Ensure this route exists
             className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
           >
             Explanation
           </Link>
-          <span className="text-gray-400" aria-hidden="true">
+          <span className="text-slate-400" aria-hidden="true">
             |
           </span>
+          {/* Updated GFS Summary Link */}
           <Link
-            to="#" // Placeholder
+            to={`/ncmnet/data-monitoring/gfs-summary/${dataType}/${cycleTime}${location.search}`}
             className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
           >
             GFS Summary
           </Link>
-          <span className="text-gray-400" aria-hidden="true">
+          <span className="text-slate-400" aria-hidden="true">
             |
           </span>
-          {/* PDF links now use URLs derived from chosenDateObj */}
           <a
             href={receptionStatusPdfUrl}
             target="_blank"
@@ -204,7 +207,7 @@ const DataDetailsPage = () => {
           >
             Reception Status
           </a>
-          <span className="text-gray-400" aria-hidden="true">
+          <span className="text-slate-400" aria-hidden="true">
             |
           </span>
           <a
@@ -217,41 +220,60 @@ const DataDetailsPage = () => {
           </a>
         </nav>
 
+        {/* ... rest of the DataDetailsPage component remains the same ... */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
             <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg">
-              <h3 className="text-gray-800 mb-5 text-center text-base font-semibold">
+              <h3 className="mb-5 text-center text-base font-semibold text-slate-800">
                 View Time Series Plot (opens image in new tab)
               </h3>
-              <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9">
-                {currentData.map((item) => {
-                  // Image URLs use dateTimeStringForCurrentDataImages derived from chosenDateObj
-                  const imageUrl = `${baseUrl}/data-monitoring/image/${dataType}/${dateTimeStringForCurrentDataImages}/${item.type}.png`;
-                  return (
-                    <a
-                      key={item.type}
-                      href={imageUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`View plot for ${item.type}`}
-                      className={`focus:ring-indigo-500 flex h-10 items-center justify-center rounded-md border px-1 text-center text-xs font-semibold shadow-sm transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 sm:h-11 sm:text-sm ${getColorForDeparture(
-                        item.departure
-                      )}`}
-                    >
-                      {item.type}
-                    </a>
-                  );
-                })}
-              </div>
+              {loadingData && (
+                <div className="text-md flex h-20 items-center justify-center font-semibold text-slate-600">
+                  Loading data types...
+                </div>
+              )}
+              {dataError && (
+                <div className="my-4 rounded-md border border-red-200 bg-red-50 p-4 text-center text-sm text-red-700">
+                  Error fetching data: {dataError}
+                </div>
+              )}
+              {!loadingData && !dataError && bufrData.length === 0 && (
+                <div className="text-md flex h-20 items-center justify-center font-semibold text-slate-500">
+                  No data types available for the selected cycle or an issue
+                  occurred with data parsing.
+                </div>
+              )}
+              {!loadingData && !dataError && bufrData.length > 0 && (
+                <div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-9">
+                  {bufrData.map((item) => {
+                    // Image URLs use dateTimeStringForCurrentDataImages derived from chosenDateObj
+                    const imageUrl = `${baseUrl}/data-monitoring/image/${dataType}/${dateTimeStringForCurrentDataImages}/${item.type}.png`;
+                    return (
+                      <a
+                        key={item.type}
+                        href={imageUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`View plot for ${item.type}`}
+                        className={`focus:ring-indigo-500 flex h-10 items-center justify-center rounded-md border px-1 text-center text-xs font-semibold shadow-sm transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 sm:h-11 sm:text-sm ${getColorForDeparture(
+                          item.departure
+                        )}`}
+                      >
+                        {item.type}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </section>
 
             <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg">
-              <h3 className="text-gray-800 mb-5 text-center text-base font-semibold">
+              <h3 className="mb-5 text-center text-base font-semibold text-slate-800">
                 Explanation of Colors (based on Departure %)
               </h3>
               <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm md:grid-cols-2">
                 <div className="flex items-start gap-3">
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-red-600"></span>
+                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-300 bg-red-600"></span>
                   <div>
                     <strong className="font-semibold text-red-700">
                       &lt; -30%:
@@ -260,7 +282,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-orange-500"></span>
+                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-300 bg-orange-500"></span>
                   <div>
                     <strong className="font-semibold text-orange-700">
                       -30% to -5%:
@@ -269,16 +291,16 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="border-gray-400 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-white"></span>
+                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-400 bg-white"></span>
                   <div>
-                    <strong className="text-gray-800 font-semibold">
+                    <strong className="font-semibold text-slate-800">
                       -5% to +5%:
                     </strong>{' '}
                     Normal Counts
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-green-600"></span>
+                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-300 bg-green-600"></span>
                   <div>
                     <strong className="font-semibold text-green-700">
                       +5% to +30%:
@@ -287,7 +309,7 @@ const DataDetailsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="border-gray-300 mt-0.5 h-4 w-4 flex-shrink-0 rounded border bg-blue-600"></span>
+                  <span className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-300 bg-blue-600"></span>
                   <div>
                     <strong className="font-semibold text-blue-700">
                       &gt; +30%:
@@ -311,7 +333,7 @@ const DataDetailsPage = () => {
 
           <aside className="lg:col-span-1">
             <div className="rounded-xl border border-slate-200 bg-white p-5 text-center shadow-lg">
-              <h3 className="text-gray-800 mb-4 text-base font-semibold">
+              <h3 className="mb-4 text-base font-semibold text-slate-800">
                 Bufr Dump: {displayCycleTime} ({displayDataType}) Plot
               </h3>
               <div className="flex min-h-[200px] items-center justify-center overflow-hidden rounded-md border border-slate-300 bg-slate-50">
@@ -322,10 +344,21 @@ const DataDetailsPage = () => {
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null;
                     currentTarget.style.display = 'none';
-                    const errorDiv = document.createElement('div');
-                    errorDiv.textContent = 'Plot image not available.';
-                    errorDiv.className = 'p-4 text-sm text-red-600';
-                    currentTarget.parentNode.appendChild(errorDiv);
+                    const parent = currentTarget.parentNode;
+                    if (parent) {
+                      // Remove previous error message if any
+                      const existingError = parent.querySelector(
+                        '.plot-error-message'
+                      );
+                      if (existingError) {
+                        parent.removeChild(existingError);
+                      }
+                      const errorDiv = document.createElement('div');
+                      errorDiv.textContent = 'Plot image not available.';
+                      errorDiv.className =
+                        'p-4 text-sm text-red-600 plot-error-message';
+                      parent.appendChild(errorDiv);
+                    }
                   }}
                 />
               </div>

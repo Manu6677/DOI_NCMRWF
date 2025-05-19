@@ -1,8 +1,8 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import UpcomingEvents1 from './UpcomingEvents1';
 import OrganizationInfo from './OrganizationInfo';
 import MapComponent from '../MapComponent';
+import { useMapEvents } from 'react-leaflet';
 
 const ImpactOverview = () => {
   const { language } = useSelector((state) => state.language);
@@ -19,6 +19,10 @@ const ImpactOverview = () => {
       description:
         'हमारे संगठन की पहलों, मिशन के बारे में अधिक जानें और विस्तृत मानचित्रों और मूल्यवान अंतर्दृष्टियों के माध्यम से हमारे प्रभाव को देखें',
     },
+  };
+
+  const handleMapClick = () => {
+    window.open('https://nwp.ncmrwf.gov.in/dashboard/', '_blank');
   };
 
   return (
@@ -40,25 +44,15 @@ const ImpactOverview = () => {
             <OrganizationInfo />
           </div>
 
-          {/* <div className="w-full md:w-5/12">
-            <h2 className="mb-4 text-2xl font-bold text-white">
+          <div
+            onClick={handleMapClick}
+            className="w-full cursor-pointer rounded-lg border border-slate-300 bg-[#008B8B] p-1 md:w-5/12"
+          >
+            <h2 className="mb-4 w-full text-center text-2xl font-bold text-white">
               {locale === 'en'
-                ? 'GIS-Based Weather Mapping and Analysis'
+                ? 'GIS-Based Weather Analysis Tool'
                 : 'जीआईएस आधारित मौसम मानचित्रण और विश्लेषण'}
             </h2>
-            <MapComponent />
-          </div> */}
-          <div className="w-full md:w-5/12">
-            <a
-              href="https://nwp.ncmrwf.gov.in/dashboard/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-4 inline-block text-3xl font-semibold tracking-wide text-orange-400 transition-all duration-300 hover:text-orange-200"
-            >
-              {locale === 'en'
-                ? 'GIS-Based Weather Mapping and Analysis'
-                : 'जीआईएस आधारित मौसम मानचित्रण और विश्लेषण'}
-            </a>
             <MapComponent />
           </div>
         </div>

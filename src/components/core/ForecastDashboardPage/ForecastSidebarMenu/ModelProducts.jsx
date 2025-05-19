@@ -293,8 +293,9 @@ const ModelProducts = () => {
           {/* No Products */}
           {!loading && products.length === 0 && metaData.length === 0 && (
             <div className="flex h-full items-center justify-center py-10">
-              <p className="text-center text-lg text-slate-500">
-                No forecast products available.
+              <p className="text-center text-lg italic text-slate-500">
+                Select a forecast model to view products. If nothing appears,
+                please try again later.
               </p>
             </div>
           )}
