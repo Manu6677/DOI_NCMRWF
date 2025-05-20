@@ -88,3 +88,6 @@ export const bulletinBoardEndPoints = {
 export const cyclonesEndPoints = {
   GET_CYCLONES_IMAGES_URL: BASE_URL + '/image-url',
 };
+export const vacancyEndPoints = {
+  GET_VACANCIES: BASE_URL + '/vacancy',
+};
