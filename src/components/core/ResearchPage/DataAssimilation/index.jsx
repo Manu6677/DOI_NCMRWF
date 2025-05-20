@@ -60,7 +60,7 @@ const DataAssimilation = () => {
           ))}
         </ul> */}
 
-        <p >{dataAssimilationTranslations.conclusion[locale]}</p>
+        <p>{dataAssimilationTranslations.conclusion[locale]}</p>
 
         {/* Button to redirect to the Data Assimilation page */}
         {/* <div className="mt-4">

@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
   specialForecastProducts: specialForecastProductsReducer,
   allBimstec: allBimstecReducer,
   observationProducts: observationProductsReducer,
-  vacancy:vacancyReducer,
+  vacancy: vacancyReducer,
 });
 
 export default rootReducer;
