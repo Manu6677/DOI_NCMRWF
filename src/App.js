@@ -46,7 +46,7 @@ const OrganizationalStructure = lazy(
 const FormerDirectors = lazy(
   () => import('./components/core/AboutPage/FormerDirectors')
 );
-const Careers = lazy(() => import('./pages/Careers'));
+const Careers = lazy(() => import('./components/core/Vacancy/vacancy'));
 const AllJobs = lazy(() => import('./pages/AllJobs'));
 const JobDetails = lazy(
   () => import('./components/core/AboutPage/CareersPage/AllJobsPage/JobDetails')

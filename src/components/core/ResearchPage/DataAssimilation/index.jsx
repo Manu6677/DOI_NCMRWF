@@ -51,16 +51,16 @@ const DataAssimilation = () => {
           {dataAssimilationTranslations.title[locale]}
         </h2>
         <p className="mb-4">{dataAssimilationTranslations.intro[locale]}</p>
-        <p className="mb-4">
+        {/* <p className="mb-4">
           {dataAssimilationTranslations.portalIntro[locale]}
-        </p>
-        <ul className="mb-4 list-inside list-disc">
+        </p> */}
+        {/* <ul className="mb-4 list-inside list-disc">
           {dataAssimilationTranslations.list.map((item, index) => (
             <li key={index}>{item[locale]}</li>
           ))}
-        </ul>
+        </ul> */}
 
-        <p>{dataAssimilationTranslations.conclusion[locale]}</p>
+        <p >{dataAssimilationTranslations.conclusion[locale]}</p>
 
         {/* Button to redirect to the Data Assimilation page */}
         {/* <div className="mt-4">

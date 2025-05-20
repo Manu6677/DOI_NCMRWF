@@ -14,6 +14,7 @@ import forecastModelsReducer from '../slices/modelProductsSlice';
 import specialForecastProductsReducer from '../slices/allSpecialProductsSliceId';
 import allBimstecReducer from '../slices/bimstecSlice';
 import observationProductsReducer from '../slices/observationProductsSlice';
+import vacancyReducer from '../slices/vacancySlice';
 
 const rootReducer = combineReducers({
   language: langReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   specialForecastProducts: specialForecastProductsReducer,
   allBimstec: allBimstecReducer,
   observationProducts: observationProductsReducer,
+  vacancy:vacancyReducer,
 });
 
 export default rootReducer;
