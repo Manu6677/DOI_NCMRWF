@@ -63,83 +63,122 @@ const ObservationProducts = () => {
   // For now, it's assumed observationUrl is fully managed by other dispatches.
 
   return (
-    <div className="flex h-screen flex-col">
-      <div className="flex-grow overflow-auto p-4 sm:p-6">
-        {/* Breadcrumbs */}
-        <Breadcrumbs items={breadcrumbItems} />
-
-        {/* Controls Section */}
-        <div className="my-4 flex flex-wrap items-center gap-4 rounded-md bg-slate-50 p-2 px-4 shadow">
+    <div className="flex max-h-screen flex-col bg-slate-100">
+      {' '}
+      {/* Consistent root styling */}
+      {/* Main content and sidebar wrapper */}
+      {/* - Default (Mobile): flex-col (Controls/Sidebar on top, Main Content below) */}
+      {/* - sm (~640px) and up (Tablets, Desktops): flex-row-reverse (Controls/Sidebar on right, Main Content on left) */}
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden p-2 sm:flex-row-reverse sm:gap-6 sm:p-4 md:p-6">
+        {/* Controls Section (Transformed into a Sidebar) */}
+        {/* - Mobile: w-full, max-h-[45vh] (prevents taking too much vertical space), internal scroll */}
+        {/* - sm (~640px): sm:w-auto, sm:max-w-xs */}
+        {/* - md (~768px, Tablet Portrait): md:max-w-sm */}
+        {/* - lg (~1024px, Tablet Landscape/Small Desktop): lg:max-w-md */}
+        <div
+          className="flex max-h-[45vh] w-full flex-shrink-0 flex-col overflow-y-auto rounded-xl border border-slate-200 bg-white p-4 shadow-lg sm:max-h-full sm:w-auto sm:max-w-xs sm:p-6 md:max-w-sm lg:max-w-md" // Sidebar styling
+        >
           {/* UTC Change Component */}
           <div className="flex items-center">
             <ChangeUTC
               selectedUTC={observationUTC}
               setSelectedUTC={(utc) => dispatch(setObservationUTC(utc))}
-              // You might want to add specific props to ChangeUTC if observation date ranges differ
             />
           </div>
 
-          {/* Forecast Hours Selection or other observation-specific filters would go here */}
-          {/* Example: If observation products have different time slots within the selected UTC day */}
-          {/* <div className="flex items-center">
-            <label htmlFor="obs-time-select" className="mr-2 text-sm font-medium text-slate-700">Time:</label>
-            <Select id="obs-time-select" ... />
-          </div> */}
-        </div>
-
-        {/* Loading State: Centered Spinner */}
-        {/* This spinner will show if 'loading' state is true. Ensure 'loading' is managed appropriately. */}
-        {loading && (
-          <div className="flex h-64 items-center justify-center">
-            <Spinner size="12" /> {/* Increased size for better visibility */}
-          </div>
-        )}
-
-        {/* No Products Available Message */}
-        {!loading &&
-          products.length === 0 && ( // Removed metaData.length check as it's not used here
-            <p className="py-10 text-center text-lg text-slate-500">
-              No observation products available. Please check your selection.
-            </p>
-          )}
-
-        {/* Product Display Grid */}
-        {!loading && products.length > 0 && (
-          <div
-            className={`grid gap-6 ${
-              products.length === 1
-                ? 'grid-cols-1 place-items-center' // Center the single card
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' // Responsive grid
-            }`}
-          >
-            {products.map((imageUrl, index) => (
-              <ProductCard
-                key={index}
-                imageUrl={imageUrl}
-                onClick={() => setPreviewProduct(imageUrl)}
-                // Pass classes for width control, consistent with other components
-                Class={
-                  products.length === 1
-                    ? 'w-full max-w-2xl' // Larger max-width for a single centered image/card
-                    : 'w-full' // Full width within its grid cell
-                }
-              />
-            ))}
-          </div>
-        )}
-      </div>{' '}
-      {/* End of scrollable content area */}
-      {/* Pagination Controls: Styled container at the bottom */}
-      {!loading && totalObservationPages > 1 && (
-        <div className="border-t border-slate-200 bg-slate-50 p-4">
-          <Pagination
-            page={observationPage}
-            totalPages={totalObservationPages}
-            onPageChange={(newPage) => dispatch(setObservationPage(newPage))}
-            // showHpa={true} // Add if this prop is relevant
-          />
+          {/* Forecast Hours Selection or other observation-specific filters would go here, stacked vertically */}
+          {/* Example:
+      {actualObservationFilters && actualObservationFilters.length > 0 && (
+        <div className="mt-4 sm:mt-6">
+          <label htmlFor="obs-time-select" className="mr-2 text-sm font-medium text-slate-700">Time:</label>
+          <Select id="obs-time-select" options={...} ... />
         </div>
       )}
+      */}
+
+          {/* Pagination Controls: Moved into the sidebar */}
+          {!loading && totalObservationPages > 1 && (
+            <div className="mt-auto border-t border-slate-200 pt-4 sm:pt-6">
+              {' '}
+              {/* mt-auto pushes to bottom */}
+              <Pagination
+                page={observationPage}
+                totalPages={totalObservationPages}
+                onPageChange={(newPage) =>
+                  dispatch(setObservationPage(newPage))
+                }
+                // showHpa={true} // Add if relevant for observations
+                // showTimeLine={true} // Add if relevant
+              />
+            </div>
+          )}
+          {/* Optional: Simplified footer if no pagination */}
+          {(loading || totalObservationPages <= 1) && (
+            <div className="mt-auto pt-4 text-center sm:pt-6">
+              {' '}
+              {/* Ensures a consistent bottom element */}
+              <hr className="border-slate-300" />
+            </div>
+          )}
+        </div>
+
+        {/* Main Content Area (Breadcrumbs, Loading, No Products, or Product Grid) */}
+        {/* - Takes remaining space (flex-1) and handles its own scrolling (overflow-y-auto) */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Breadcrumbs: Placed at the top of the scrollable main content */}
+          <div className="mb-2 px-1 py-2 sm:mb-4 sm:px-2">
+            {' '}
+            {/* Padding for breadcrumbs container */}
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="flex h-full items-center justify-center py-10">
+              {' '}
+              {/* h-full for better centering */}
+              <Spinner size="12" />
+            </div>
+          )}
+
+          {/* No Products Available Message */}
+          {!loading && products.length === 0 && (
+            <div className="flex h-full flex-col items-center justify-center p-4 py-10 text-center">
+              {' '}
+              {/* h-full for centering */}
+              <p className="text-base italic text-slate-500 sm:text-lg">
+                No observation products available. Please check your selection.
+              </p>
+            </div>
+          )}
+
+          {/* Product Display Grid */}
+          {/* - Standardized responsive columns, padding, and gap. */}
+          {!loading && products.length > 0 && (
+            <div
+              className={`grid gap-4 p-2 sm:gap-6 sm:p-4 ${
+                // Responsive padding and gap
+                products.length === 1
+                  ? 'grid-cols-1 place-items-center'
+                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' // Standardized responsive columns
+              }`}
+            >
+              {products.map((imageUrl, index) => (
+                <ProductCard
+                  key={index}
+                  imageUrl={imageUrl}
+                  onClick={() => setPreviewProduct(imageUrl)}
+                  Class={`${
+                    products.length === 1
+                      ? 'w-full max-w-lg sm:max-w-xl md:max-w-2xl' // Responsive max-width for single item
+                      : 'w-full'
+                  } rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 bg-white border`} // Added border
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
       {/* Image Preview Modal */}
       {previewProduct && (
         <ProductImageModal
