@@ -18,6 +18,7 @@ export const bulletinBoardDetails = [
     link: `${ASSETS_BASE_URL}/Documents/slider-notice/annual-reports-pdf/NCMRWF_Annual_Report_2024_25_FINAL.pdf`,
     status: '',
   },
+
   {
     text: 'Commemorating 37th Foundation Day of National Centre for Medium Range Weather Forecasting',
     link: `${ASSETS_BASE_URL}/Documents/slider-notice/Foundation_Day_Programme_25Mar2025_modified.pdf`,
