@@ -14,9 +14,9 @@ const ProductImageModal = ({ imageUrl, onClose }) => {
         </button>
 
         {/* Title */}
-        <h2 className="mb-6 text-center text-3xl font-bold text-blue-900">
+        {/* <h2 className="mb-6 text-center text-3xl font-bold text-blue-900">
           Forecast Product
-        </h2>
+        </h2> */}
 
         {/* Filters */}
         {/* <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">

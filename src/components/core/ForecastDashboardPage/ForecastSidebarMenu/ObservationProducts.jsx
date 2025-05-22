@@ -125,13 +125,6 @@ const ObservationProducts = () => {
         {/* Main Content Area (Breadcrumbs, Loading, No Products, or Product Grid) */}
         {/* - Takes remaining space (flex-1) and handles its own scrolling (overflow-y-auto) */}
         <div className="flex-1 overflow-y-auto">
-          {/* Breadcrumbs: Placed at the top of the scrollable main content */}
-          <div className="mb-2 px-1 py-2 sm:mb-4 sm:px-2">
-            {' '}
-            {/* Padding for breadcrumbs container */}
-            <Breadcrumbs items={breadcrumbItems} />
-          </div>
-
           {/* Loading State */}
           {loading && (
             <div className="flex h-full items-center justify-center py-10">

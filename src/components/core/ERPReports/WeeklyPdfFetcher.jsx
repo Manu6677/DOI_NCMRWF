@@ -5,12 +5,13 @@ const REACT_APP_ASSETS_BASE_URL_NEW = process.env.REACT_APP_ASSETS_BASE_URL_NEW;
 const REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH =
   process.env.REACT_APP_ASSETS_BASE_URL_NEW_BASE_PATH;
 
-const getThursdays = (year, month) => {
+const getPastThursdays = (year, month) => {
   const thursdays = [];
   const date = new Date(year, month, 1);
+  const today = new Date();
 
   while (date.getMonth() === month) {
-    if (date.getDay() === 4) {
+    if (date.getDay() === 4 && date <= today) {
       thursdays.push(new Date(date));
     }
     date.setDate(date.getDate() + 1);
@@ -27,8 +28,9 @@ const WeeklyPdfFetcher = () => {
 
   useEffect(() => {
     const today = new Date();
-    const thuDates = getThursdays(today.getFullYear(), today.getMonth());
-    setThursdays(thuDates); // you can rename this state too for clarity
+    const thuDates = getPastThursdays(today.getFullYear(), today.getMonth());
+
+    setThursdays(thuDates);
   }, []);
 
   //   const handleChange = (e) => {

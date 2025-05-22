@@ -4,43 +4,41 @@ import toast from 'react-hot-toast';
 import { fetchProductChart } from '../../../../services/operations/forecastAPI';
 import ProductImageModal from '../ProductImageModal';
 import Breadcrumbs from '../../../common/Breadcrumbs';
-import ProductCard from './ProductCard';
+import ProductCard from './ProductCard'; // Assuming this component handles image display well
 import Pagination from '../../../common/Pagination';
 import ForecastHours from '../ForecastSidebarMenu/ForecastHours';
 import { fetchForecastHours } from '../../../../services/operations/forecastAPI';
 import Spinner from '../../../common/Spinner';
 import ChangeUTC from './ChangeUTC';
-import { setSpecialProductsId } from '../../../../slices/allSpecialProductsSliceId';
+import {
+  setSpecialProductsId,
+  setForecastUrl,
+} from '../../../../slices/allSpecialProductsSliceId';
 import { setPage, setTotalPages } from '../../../../slices/paginationSlice';
 import Select from 'react-select';
 
 const FORECAST_HOURS = [0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240];
 const BASE_CITY_IMG_URL = process.env.REACT_APP_ASSETS_BASE_URL_NEW_DIR;
+
 const ModelProducts = () => {
   const now = new Date();
-  now.setUTCDate(now.getUTCDate() - 1); // Subtract one day to get the previous date
-  const utcDate = now.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  now.setUTCDate(now.getUTCDate() - 1);
+  const utcDate = now.toISOString().split('T')[0];
 
   const selectedModel = useSelector((state) => state.forecast.selectedModel);
   const selectedProduct = useSelector(
     (state) => state.modelProducts.selectedProduct
   );
-  // const selectedProductId = useSelector(
-  //   (state) => state.allSpecialProductsId.selectedProductId
-  // );
   const forecastUrl = useSelector(
     (state) => state.allSpecialProductsId.forecastUrl
   );
-  // const selectedUTC = useSelector((state) => state.utc.selectedUTC);
   const page = useSelector((state) => state.pagination.page);
   const totalPages = useSelector((state) => state.pagination.totalPages);
-
-  // console.log('Selected Product ID from Redux:', selectedProductId);
 
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(false); // This state is set but not directly used to render map?
   const [cityNames, setCityNames] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [products, setProducts] = useState([]);
@@ -54,7 +52,9 @@ const ModelProducts = () => {
     label: `${utcDate} (00 UTC)`,
     value: `${utcDate}/00`,
   });
+
   const loadProducts = useCallback(async () => {
+    // ... (loadProducts implementation remains the same)
     const [selectedDate, selectedUtcValue] = selectedUTC.value.split('/');
     setCityNames([]);
 
@@ -70,12 +70,12 @@ const ModelProducts = () => {
         1
       );
 
-      setShowMap(response?.showMap);
+      setShowMap(response?.showMap); // Still unsure how showMap is used visually
 
       if (Array.isArray(response?.cityNames) && response.cityNames.length > 0) {
         setCityNames(response.cityNames);
         setSelectedCity(response.cityNames[0][0]);
-        setProducts([]);
+        setProducts([]); // Clear products if city names are loaded (assuming city selection re-fetches specific product)
       }
 
       if (response.products.length > 0) {
@@ -84,11 +84,14 @@ const ModelProducts = () => {
         dispatch(setTotalPages(response.totalPages));
       } else if (response.metadata.length > 0) {
         setProducts([]);
-        setMetaData(response?.metadata[0]);
-        dispatch(setTotalPages(0));
+        setMetaData(response?.metadata[0]); // Assuming metadata is an array with one object
+        dispatch(setTotalPages(0)); // Typically metadata might not be paginated the same way
       } else {
+        // toast.error('No forecast products available.'); // Removed to avoid too many toasts if it's a common scenario
         console.log('No forecast products available.');
-        // toast.error('No forecast products available.');
+        setProducts([]);
+        setMetaData([]);
+        dispatch(setTotalPages(0));
       }
     } catch (error) {
       console.error('Error fetching forecast products:', error);
@@ -98,40 +101,63 @@ const ModelProducts = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedModel, selectedProduct, selectedForecastHour, page, selectedUTC]);
+  }, [
+    selectedModel,
+    selectedProduct,
+    selectedForecastHour,
+    page,
+    selectedUTC,
+    dispatch,
+  ]); // Added dispatch to dependencies
 
   useEffect(() => {
     if (forecastUrl) {
       if (Array.isArray(forecastUrl)) {
         setProducts(forecastUrl);
       } else {
-        setProducts([forecastUrl]); // Wrap it in array if it's a single URL
+        setProducts([forecastUrl]);
       }
+      // When forecastUrl is set (e.g. from an external link/slice), clear city-specific data potentially
+      setCityNames([]);
+      setMetaData([]);
     }
   }, [forecastUrl]);
 
   useEffect(() => {
-    dispatch(setPage(1)); // Reset page when product changes
+    dispatch(setPage(1));
   }, [selectedProduct, dispatch]);
 
   useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
+    // Only load products if not relying on forecastUrl from redux
+    // And if essential selections are made
+    dispatch(setForecastUrl(null));
+    if (!forecastUrl && selectedModel?.model_id && selectedProduct?.id) {
+      loadProducts();
+    }
+    // If forecastUrl is present, products are set by another useEffect,
+    // so loadProducts might not be needed or could lead to conflict unless handled.
+    // For now, assuming forecastUrl takes precedence if available.
+  }, [loadProducts, forecastUrl, selectedModel, selectedProduct]); // Added forecastUrl, selectedModel, selectedProduct to ensure it re-evaluates
 
   useEffect(() => {
     const loadForecastHour = async () => {
+      // ... (loadForecastHour implementation remains the same)
       setLoading(true);
       try {
         const { hours } = await fetchForecastHours(
-          selectedModel?.model_id || 1,
+          selectedModel?.model_id || 1, // Default values might be risky if they don't match actual available data
           selectedProduct?.id || 2
         );
 
         if (Array.isArray(hours) && hours.length > 0) {
           setForecastHours(hours);
-          setSelectedForecastHour(hours[0]);
+          // Avoid setting selectedForecastHour if current one is still valid
+          if (!hours.includes(selectedForecastHour)) {
+            setSelectedForecastHour(hours[0]);
+          }
         } else {
           setForecastHours([]);
+          setSelectedForecastHour(undefined); // Or null
         }
       } catch (error) {
         console.error('Error fetching forecast hours:', error);
@@ -141,42 +167,66 @@ const ModelProducts = () => {
       }
     };
 
-    loadForecastHour();
-  }, [selectedModel?.model_id, selectedProduct?.id]);
+    if (selectedModel?.model_id && selectedProduct?.id) {
+      loadForecastHour();
+    } else {
+      setForecastHours(FORECAST_HOURS); // Reset to default or clear
+      setSelectedForecastHour(FORECAST_HOURS[0]);
+    }
+  }, [selectedModel?.model_id, selectedProduct?.id]); // Removed selectedForecastHour from deps to avoid loop if it's set inside
 
   useEffect(() => {
-    const [urlDate] = selectedUTC.value.split('/');
-    let cityname = selectedCity;
-    if (cityname.toLowerCase() === 'shillong') {
-      cityname = 'shillongani';
-    } else if (cityname.toLowerCase() === 'aizawal') {
-      cityname = 'aizawl';
-    } else if (cityname.toLowerCase() === 'port_blair') {
-      cityname = 'portblair';
-    } else if (cityname.toLowerCase() === 'silvassa') {
-      cityname = 'silvasa';
-    } else if (cityname.toLowerCase() === 'thiruvananthapuram') {
-      cityname = 'TRIVANDRUM';
-    } else if (cityname.toLowerCase() === 'maitri') {
-      cityname = 'maitri';
+    // This useEffect seems to be for a very specific case of NCUM-Outputs for cities
+    // It directly sets `products` to a single image URL based on `selectedCity` and `selectedUTC`
+    // This might override products loaded by `loadProducts` if a city is selected.
+    // Consider if this is the desired behavior or if it should be conditional.
+    if (selectedCity && cityNames.length > 0) {
+      // Only trigger if cities were loaded and one is selected
+      const [urlDate] = selectedUTC.value.split('/');
+      let cityname = selectedCity;
+      // Normalize city names
+      if (cityname.toLowerCase() === 'shillong') cityname = 'shillongani';
+      else if (cityname.toLowerCase() === 'aizawal') cityname = 'aizawl';
+      else if (cityname.toLowerCase() === 'port_blair') cityname = 'portblair';
+      else if (cityname.toLowerCase() === 'silvassa') cityname = 'silvasa';
+      else if (cityname.toLowerCase() === 'thiruvananthapuram')
+        cityname = 'TRIVANDRUM';
+      // `maitri` already in lowercase, toUpperCase() will make it MAITRI if that's intended.
+      // If `maitri` should remain lowercase in URL, adjust `toUpperCase()` call.
+
+      const dynamicUrl = `${BASE_CITY_IMG_URL}/${urlDate}/NCUM-Outputs/umInd-${cityname.toUpperCase()}.png`;
+      setProducts([dynamicUrl]);
+      setMetaData([]); // Clear metadata when city-specific image is shown
+      dispatch(setTotalPages(0)); // City images are not paginated here
     }
-    const dynamicUrl = `${BASE_CITY_IMG_URL}/${urlDate}/NCUM-Outputs/umInd-${cityname.toUpperCase()}.png`;
-    setProducts([dynamicUrl]);
-  }, [selectedCity, selectedUTC]);
+  }, [selectedCity, selectedUTC, cityNames, dispatch]); // Added cityNames and dispatch
+
+  // Breadcrumb data - ensure selectedProduct and selectedModel are defined
+  const breadcrumbItems = [];
+  if (selectedModel)
+    breadcrumbItems.push({
+      name: selectedModel.model_name,
+      path: '/forecast/models',
+    }); // Example path
+  if (selectedProduct)
+    breadcrumbItems.push({
+      name: selectedProduct.name,
+      path: `/forecast/models/${selectedModel?.model_id}`,
+    });
 
   return (
     <div className="flex max-h-screen flex-col bg-slate-100">
       {/* Main content and sidebar wrapper */}
       {/* - Default (Mobile): flex-col (Sidebar on top, Main Content below) */}
       {/* - sm (~640px) and up (Tablets, Desktops): flex-row-reverse (Sidebar on right, Main Content on left) */}
-      <div className="flex flex-1 flex-col gap-4 overflow-hidden p-2 sm:gap-6 sm:p-4 md:flex-row-reverse md:p-6">
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden p-2 sm:flex-row-reverse sm:gap-6 sm:p-4 md:p-6">
         {/* Sidebar Controls */}
         {/* - Mobile: w-full, max-h-[45vh] (prevents taking too much vertical space), internal scroll */}
         {/* - sm (~640px): sm:w-auto, sm:max-w-xs, sm:max-h-full (takes available height) */}
         {/* - md (~768px, Tablet Portrait): md:max-w-sm */}
         {/* - lg (~1024px, Tablet Landscape/Small Desktop): lg:max-w-md */}
         <div
-          className="flex max-h-[45vh] w-full shrink-0 flex-col overflow-y-auto rounded-xl border border-slate-200 bg-white p-4 shadow-lg sm:max-h-full sm:w-auto sm:max-w-xs sm:p-6 md:max-w-sm lg:max-w-md" // max-h for mobile, full height for sm+
+          className="flex max-h-[45vh] w-full flex-shrink-0 flex-col overflow-y-auto rounded-xl border border-slate-200 bg-white p-4 shadow-lg sm:max-h-full sm:w-auto sm:max-w-xs sm:p-6 md:max-w-sm lg:max-w-md" // max-h for mobile, full height for sm+
         >
           {/* UTC Change */}
           <div className="flex items-center">
