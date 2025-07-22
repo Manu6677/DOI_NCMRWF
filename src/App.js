@@ -54,6 +54,7 @@ const JobDetails = lazy(
 const Employees = lazy(() => import('./pages/Employees'));
 const Research = lazy(() => import('./pages/Research'));
 const Publications = lazy(() => import('./pages/Publications'));
+const USGSPublicationPage = lazy(() => import('./pages/USGSPublicationPage'));
 const Milestones = lazy(() => import('./pages/Milestones'));
 const Bimstec = lazy(() => import('./pages/Bimstec'));
 const BimstecCharts = lazy(() => import('./pages/BimstecCharts'));
@@ -215,6 +216,10 @@ function App() {
           <Route path="/bimstec/charts" element={<BimstecCharts />} />
           <Route path="/reanalysis" element={<Reanalysis />} />
           <Route path="/publications" element={<Publications />} />
+          <Route
+            path="/USGSPublicationPage"
+            element={<USGSPublicationPage />}
+          />
           <Route path="/full-gallery" element={<PhotoGallery />} />
           <Route path="/computing/milestones" element={<Milestones />} />
           <Route path="/computing/hpc-systems" element={<Hpc />} />
