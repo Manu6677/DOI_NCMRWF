@@ -216,8 +216,13 @@ function App() {
           <Route path="/bimstec/charts" element={<BimstecCharts />} />
           <Route path="/reanalysis" element={<Reanalysis />} />
           <Route path="/publications" element={<Publications />} />
+          {/* <Route path="/publications/:id" element={<USGSPublicationPage />} /> */}
+          {/* <Route
+            path="/publications/10.64349/tr/nmrf.tr.1.2025"
+            element={<USGSPublicationPage />}
+          /> */}
           <Route
-            path="/USGSPublicationPage"
+            path="publications/:doiPart1/:doiPart2/:doiPart3"
             element={<USGSPublicationPage />}
           />
           <Route path="/full-gallery" element={<PhotoGallery />} />
