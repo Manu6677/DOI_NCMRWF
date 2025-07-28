@@ -595,7 +595,7 @@ const Publications = () => {
                           DOI: {pub.doi}
                         </a>
                       )}
-
+                      {/* 
                       {pub.doi === '10.1177/0309524X241238353' && (
                         <Link
                           // to={`/publications/${transformedDOI}`}
@@ -604,7 +604,7 @@ const Publications = () => {
                         >
                           <span className="relative z-10">View Page</span>
                         </Link>
-                      )}
+                      )} */}
                     </li>
                   ))}
                 </ul>
