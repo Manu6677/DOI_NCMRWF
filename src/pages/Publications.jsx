@@ -276,24 +276,21 @@ export const hardcodedPublications = [
     abstract:
       'Statistical post-processing of numerical weather prediction data enhances wind energy forecasts by applying distribution-based scaling, improving accuracy for renewable energy applications.',
     transformedDoi: '10.64349/tr/nmrf.tr.1.2025',
+    number: 'tr/nmrf.tr.2.2025',
   },
   {
     id: 2,
     authors: [
-      'Arijit Chakraborty',
-      'Manabendra Saharia',
-      'Sumedha Chakma',
-      'Dharmendra Kumar Pandey',
-      'Kondapalli Niranjan Kumar',
-      'Praveen K. Thakur',
-      'Sujay Kumar',
-      'Augusto Getirana',
+      'Shivali Gangwar',
+      'B. Athiyaman',
+      'K.B.R.R Hari Prasad',
+      'Ashish Routray',
     ],
     year: 2025,
-    title:
-      'Improved soil moisture estimation and detection of irrigation signal by incorporating SMAP soil moisture into the Indian Land Data Assimilation System (ILDAS)',
-    journal: 'Journal of Hydrology',
+    title: 'HAFSV2.0.2 INSTALLATION, OPTIMIZATION AND IMPLEMENTATION AT NCMRWF',
+    journal: 'NCMRWF',
     doi: '10.1177/0309524X241238353',
+    number: 'tr/nmrf.tr.1.2024',
     link: 'publication2.pdf',
     abstract:
       'Incorporating SMAP soil moisture data into ILDAS enhances soil moisture estimation and irrigation signal detection, improving hydrological modeling in India.',
@@ -301,22 +298,16 @@ export const hardcodedPublications = [
   },
   {
     id: 3,
-    authors: [
-      'Arun Kumar',
-      'Kanak Lata Xalxo',
-      'Sushil Kumar',
-      'Biranchi Kumar Mahala',
-      'Ashish Routray',
-      'Nagendra Kumar',
-    ],
+    authors: ['Gopinadh Rongali', 'Raghavendra Ashrit', 'V. S. Prasad'],
     year: 2025,
     title:
-      "Performance Assessment of 4D-VAR Microphysics Schemes in Simulating the Track and Intensity of Super Cyclonic Storm 'Amphan'",
+      'Implementation of a Web-Based Data Visualization and Mapping System Using the QGIS2Web Plugin at NCMRWF',
     journal: 'Pure and Applied Geophysics',
     // doi: '10.1177/0309524X241238355',
     doi: '10.1177/0309524X241238353',
     transformedDoi: '10.64349/tr/nmrf.tr.2.2024',
     link: 'publication3.pdf',
+    number: 'tr/nmrf.tr.2.2024',
   },
   {
     id: 4,
@@ -329,13 +320,12 @@ export const hardcodedPublications = [
       'V.S. Prasad',
     ],
     year: 2025,
-    title:
-      'Grand ensemble forecasts verification based on two high resolution (~12 km) global ensemble prediction systems',
+    title: 'NCMRWF MONTHLY DATA MONITORING REPORT February 2025',
     journal: 'Atmospheric Research',
-    // doi: '10.1016/j.atmosres.2024.107585',
     doi: '10.1177/0309524X241238353',
     transformedDoi: '10.64349/tr/nmrf.tr.2.2025',
     link: 'publication4.pdf',
+    number: 'tr/nmrf.tr.2.2024',
   },
   {
     id: 5,
@@ -423,6 +413,28 @@ export const hardcodedPublications = [
   },
 ];
 
+export const hardcodedReports = [
+  {
+    title:
+      'HAFSV2.0.2 INSTALLATION, OPTIMIZATION AND IMPLEMENTATION AT NCMRWF: Jun-Sep 2024',
+    link: '#',
+    status: 'new',
+    type: 'technical',
+    transformedDoi: transformReportDOI(0, 2024),
+  },
+  {
+    title:
+      'Implementation of a Web-Based Data Visualization and Mapping System Using the QGIS2Web Plugin at NCMRWF',
+    link: '#',
+    status: '',
+    type: 'project',
+    transformedDoi: transformReportDOI(1, 2024),
+  },
+];
+function transformReportDOI(index, year = 2025) {
+  return `10.64349/tr/nmrf.tr.${index + 1}.${year}`;
+}
+
 export const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_BASE_URL || '';
 export const ASSETS_BASE_URL_NEW =
   process.env.REACT_APP_ASSETS_BASE_URL_NEW || '';
@@ -454,11 +466,18 @@ const Publications = () => {
     new Date().getFullYear().toString()
   );
 
-  const [internalReports, setInternalReports] = useState([]);
+  // const [internalReports, setInternalReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedReportType, setSelectedReportType] = useState('');
   const navigate = useNavigate();
+
+  // ✅ Static filtered data instead of API
+  const filteredReports = selectedReportType
+    ? hardcodedReports.filter((r) => r.type === selectedReportType)
+    : hardcodedReports;
+
+  const internalReports = filteredReports; // So JSX below still works
 
   // Filter publications based on selected year
   const filteredPublications = hardcodedPublications.filter(
@@ -466,27 +485,27 @@ const Publications = () => {
   );
 
   // Fetch internal reports based on activeTab and selectedReportType
-  useEffect(() => {
-    const getReports = async () => {
-      if (activeTab !== 'Internal Reports') return;
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await fetchInternalReports(selectedReportType);
-        const filteredData = selectedReportType
-          ? (data || []).filter((item) => item.type === selectedReportType)
-          : data || [];
-        setInternalReports(filteredData);
-      } catch (err) {
-        console.error('Error fetching internal reports:', err);
-        setError(err.message || 'Failed to fetch internal reports.');
-        setInternalReports([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getReports();
-  }, [activeTab, selectedReportType]);
+  // useEffect(() => {
+  //   const getReports = async () => {
+  //     if (activeTab !== 'Internal Reports') return;
+  //     setLoading(true);
+  //     setError(null);
+  //     try {
+  //       const data = await fetchInternalReports(selectedReportType);
+  //       const filteredData = selectedReportType
+  //         ? (data || []).filter((item) => item.type === selectedReportType)
+  //         : data || [];
+  //       setInternalReports(filteredData);
+  //     } catch (err) {
+  //       console.error('Error fetching internal reports:', err);
+  //       setError(err.message || 'Failed to fetch internal reports.');
+  //       setInternalReports([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   getReports();
+  // }, [activeTab, selectedReportType]);
 
   // Use staticLatestPublications for the sidebar
   const latestPublicationsForSidebar = staticLatestPublications.slice(0, 5);
@@ -674,7 +693,7 @@ const Publications = () => {
                   No internal reports found for the selected type.
                 </p>
               )}
-              {!loading && !error && internalReports.length > 0 && (
+              {/* {!loading && !error && internalReports.length > 0 && (
                 <ul className="space-y-2 text-sm sm:text-base">
                   {internalReports.map((report, index) => (
                     <li
@@ -689,6 +708,29 @@ const Publications = () => {
                       >
                         {report.title}
                       </a>
+                      {report.status === 'new' && (
+                        <span className="ml-2 whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
+                          NEW
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )} */}
+
+              {!loading && !error && internalReports.length > 0 && (
+                <ul className="space-y-2 text-sm sm:text-base">
+                  {internalReports.map((report, index) => (
+                    <li
+                      key={report.id || index}
+                      className="flex items-center justify-between rounded-md border border-slate-200 bg-white p-2.5 shadow-sm"
+                    >
+                      <Link
+                        to={`/publications/internal_reports/${report.transformedDoi}`} // ✅ Make sure `report.transformedDoi` exists in the object
+                        className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                      >
+                        {report.title}
+                      </Link>
                       {report.status === 'new' && (
                         <span className="ml-2 whitespace-nowrap rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
                           NEW

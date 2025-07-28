@@ -222,7 +222,7 @@ function App() {
             element={<USGSPublicationPage />}
           /> */}
           <Route
-            path="publications/:doiPart1/:doiPart2/:doiPart3"
+            path="publications/internal_reports/:doiPart1/:doiPart2/:doiPart3"
             element={<USGSPublicationPage />}
           />
           <Route path="/full-gallery" element={<PhotoGallery />} />
